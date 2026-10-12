@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coleção · Denis Fassano</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1C1B18;
+  --paper: #FAF8F3;
+  --cream: #F2EFE6;
+  --warm: #E8E3D5;
+  --gold: #B8922A;
+  --gold-lt: #E8D5A0;
+  --muted: #8A8578;
+  --subtle: #C8C3B5;
+  --sidebar-w: 220px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: 40px 28px;
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 200;
+}
+.s-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold-lt);
+  margin-bottom: 6px;
+}
+.s-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #FAF8F3;
+  line-height: 1.2;
+  margin-bottom: 40px;
+}
+.s-divider { height: 1px; background: rgba(255,255,255,.08); margin-bottom: 32px; }
+.s-label {
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.25);
+  margin-bottom: 14px;
+}
+.s-nav { display: flex; flex-direction: column; gap: 2px; margin-bottom: 40px; }
+.s-link {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,.5);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: .01em;
+}
+.s-link:hover { color: rgba(255,255,255,.85); background: rgba(255,255,255,.06); }
+.s-link.active { color: #FAF8F3; background: rgba(255,255,255,.1); }
+.s-link .ico { font-size: 14px; opacity: .7; }
+.s-stats { margin-top: auto; }
+.s-stat { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+.s-stat:last-child { border-bottom: none; }
+.s-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-lt); line-height: 1; }
+.s-stat-label { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 2px; }
+
+/* ── MAIN ── */
+.main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; }
+.pg { display: none; min-height: 100vh; }
+.pg.on { display: block; }
+
+/* ── HOME ── */
+.home-hero {
+  padding: 80px 60px 40px;
+  border-bottom: 1px solid var(--warm);
+}
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+.hero-title em { font-style: italic; color: var(--muted); }
+.hero-desc {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.7;
+}
+.home-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--warm);
+}
+.hm {
+  padding: 32px 40px;
+  border-right: 1px solid var(--warm);
+}
+.hm:last-child { border-right: none; }
+.hm-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--ink);
+}
+.hm-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+.hm-sub { font-size: 12px; color: var(--subtle); margin-top: 4px; }
+
+/* CATEGORIAS CLICÁVEIS */
+.home-cats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--warm); }
+.cat-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 26px 36px;
+  border-right: 1px solid var(--warm);
+  cursor: pointer;
+  transition: background .2s;
+}
+.cat-card:last-child { border-right: none; }
+.cat-card:hover { background: var(--cream); }
+.cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.cat-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.2; }
+.cat-count { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.cat-arrow { margin-left: auto; color: var(--subtle); font-size: 16px; transition: transform .2s; }
+.cat-card:hover .cat-arrow { transform: translateX(4px); }
+
+/* FEATURED ROW */
+.home-featured {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 320px;
+  border-bottom: 1px solid var(--warm);
+}
+.feat-card {
+  padding: 48px 56px;
+  cursor: pointer;
+  transition: background .2s;
+  border-right: 1px solid var(--warm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.feat-card:last-child { border-right: none; }
+.feat-card:hover { background: var(--cream); }
+.feat-eyebrow { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.feat-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.feat-desc { font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1; }
+.feat-arrow { font-size: 24px; color: var(--subtle); margin-top: 28px; align-self: flex-end; transition: transform .2s; }
+.feat-card:hover .feat-arrow { transform: translate(4px,-4px); }
+
+/* QUICK NAV */
+.home-quick {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.qn {
+  padding: 32px 36px;
+  border-right: 1px solid var(--warm);
+  cursor: pointer;
+  transition: background .2s;
+  border-bottom: 1px solid var(--warm);
+}
+.qn:last-child { border-right: none; }
+.qn:hover { background: var(--cream); }
+.qn-ico { font-size: 22px; margin-bottom: 12px; display: block; }
+.qn-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; margin-bottom: 4px; }
+.qn-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* ── INNER PAGES ── */
+.pg-header {
+  padding: 52px 60px 36px;
+  border-bottom: 1px solid var(--warm);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.pg-header-left {}
+.pg-eyebrow { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.pg-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 44px;
+  font-weight: 300;
+  line-height: 1.1;
+}
+.pg-body { padding: 40px 60px; }
+
+/* ── COLLECTION TABLE ── */
+.toolbar { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; align-items: center; }
+.srch {
+  flex: 1; min-width: 200px;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--warm);
+  padding: 10px 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .2s;
+}
+.srch:focus { border-bottom-color: var(--gold); }
+.srch::placeholder { color: var(--subtle); }
+.sel {
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--warm);
+  padding: 10px 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  outline: none;
+}
+.rct { font-size: 12px; color: var(--subtle); letter-spacing: .04em; }
+
+.ctable { width: 100%; border-collapse: collapse; }
+.ctable thead tr { border-bottom: 2px solid var(--ink); }
+.ctable th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 0 12px;
+}
+.ctable th:not(:first-child) { padding-left: 20px; }
+.th-sort { cursor: pointer; user-select: none; transition: color .15s; }
+.th-sort:hover { color: var(--gold); }
+.sort-ind { font-size: 9px; color: var(--gold); margin-left: 2px; }
+.ctable tbody tr {
+  border-bottom: 1px solid var(--warm);
+  transition: background .12s;
+  cursor: default;
+}
+.ctable tbody tr:hover { background: var(--cream); }
+.ctable td { padding: 14px 0; vertical-align: middle; }
+.ctable td:not(:first-child) { padding-left: 20px; }
+.td-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+.td-house { font-size: 13px; color: var(--muted); }
+.td-size { font-size: 12px; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.tags-wrap { display: flex; gap: 5px; flex-wrap: wrap; }
+
+/* TAGS */
+.tag {
+  font-size: 10px; padding: 3px 9px; border-radius: 3px;
+  font-weight: 500; letter-spacing: .04em; white-space: nowrap;
+}
+.tag-niche { background: #EDE8F8; color: #4A2F8A; }
+.tag-designer { background: #E5EFF8; color: #1A4878; }
+.tag-oriental { background: #F8F0E0; color: #7A4800; }
+.tag-inspired { background: #E5F4E8; color: #1E6830; }
+.tag-sig { background: #F2EEFF; color: #5A3A9A; }
+.tag-fresh { background: #E5F4E8; color: #1E6830; }
+.tag-night { background: #FEF0F5; color: #882050; }
+.tag-formal { background: #E5EFF8; color: #1A4878; }
+.tag-loud { background: #F8F0E0; color: #7A4800; }
+.tag-safe { background: #F0EFEB; color: #5A5850; }
+
+/* ── ROTATION ── */
+.rot-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+.rot-card {
+  padding: 36px 40px;
+  border-right: 1px solid var(--warm);
+  border-bottom: 1px solid var(--warm);
+}
+.rot-card:nth-child(2n) { border-right: none; }
+.rot-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.rot-ico { font-size: 20px; }
+.rot-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; }
+.rot-item { font-size: 13px; color: var(--muted); padding: 7px 0; border-bottom: 1px solid var(--warm); }
+.rot-item:last-child { border-bottom: none; }
+
+/* ── SEASONS ── */
+.sea-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+.sea-card {
+  padding: 44px 48px;
+  border-right: 1px solid var(--warm);
+  border-bottom: 1px solid var(--warm);
+}
+.sea-card:nth-child(2n) { border-right: none; }
+.sea-season {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+.sea-months { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+.sea-item { font-size: 13px; color: var(--muted); padding: 6px 0; border-bottom: 1px solid var(--warm); }
+.sea-item:last-child { border-bottom: none; }
+.sea-gap { font-size: 12px; color: var(--subtle); font-style: italic; padding: 6px 0; }
+
+/* ── GAPS ── */
+.gap-row {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 20px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--warm);
+  align-items: start;
+}
+.gap-row:last-child { border-bottom: none; }
+.gap-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; }
+.dot-open { background: var(--warm); border: 1.5px solid var(--subtle); }
+.dot-partial { background: var(--gold-lt); border: 1.5px solid var(--gold); }
+.dot-done { background: #A8CBA8; border: 1.5px solid #4E8A4E; }
+.gap-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.gap-pill {
+  font-size: 10px;
+  padding: 2px 9px;
+  border-radius: 3px;
+  background: #F0F8EC;
+  color: #2A6830;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+.gap-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+
+/* ── TOP 10 ── */
+.top10-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--warm);
+  align-items: start;
+}
+.top10-item:last-child { border-bottom: none; }
+.t10-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--warm);
+  line-height: 1;
+}
+.t10-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; margin-bottom: 3px; }
+.t10-profile { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.t10-why { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* ── CARD DO PERFUME (MODAL) ── */
+.ctable tbody tr { cursor: pointer; }
+.modal-bg{position:fixed;inset:0;background:rgba(28,27,24,.55);backdrop-filter:blur(5px);z-index:500;display:none;align-items:center;justify-content:center;padding:24px}
+.modal-bg.on{display:flex}
+.modal{position:relative;background:var(--paper);max-width:700px;width:100%;max-height:88vh;overflow:auto;display:grid;grid-template-columns:240px 1fr;border-radius:4px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.modal-visual{background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:44px 20px;min-height:340px}
+.m-rank{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-lt);border:1px solid rgba(232,213,160,.4);padding:4px 12px;border-radius:20px}
+.modal-body{padding:40px 44px}
+.m-close{position:absolute;top:10px;right:14px;background:none;border:none;font-size:26px;color:var(--subtle);cursor:pointer;line-height:1;z-index:2;font-family:'DM Sans',sans-serif}
+.m-close:hover{color:var(--ink)}
+.m-house{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.m-name{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;line-height:1.15;margin-bottom:14px}
+.m-tags{display:flex;gap:5px;flex-wrap:wrap}
+.m-sec{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:22px 0 8px}
+.m-profile{font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;line-height:1.4}
+.m-desc{font-size:13px;color:var(--muted);line-height:1.7}
+.m-chips{display:flex;gap:6px;flex-wrap:wrap}
+.m-chip{font-size:11px;padding:4px 11px;border:1px solid var(--warm);border-radius:20px;color:var(--muted)}
+@media (max-width:700px){.modal{grid-template-columns:1fr}.modal-visual{min-height:200px;padding:28px 20px}}
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .home-metrics { grid-template-columns: repeat(2, 1fr); }
+  .home-cats { grid-template-columns: repeat(2, 1fr); }
+  .home-featured, .rot-grid, .sea-grid { grid-template-columns: 1fr; }
+  .home-quick { grid-template-columns: repeat(2, 1fr); }
+  .pg-header, .pg-body, .home-hero { padding-left: 24px; padding-right: 24px; }
+  .rot-card, .sea-card { border-right: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="s-logo">Coleção</div>
+  <div class="s-name">Denis<br>Fassano</div>
+  <div class="s-divider"></div>
+  <div class="s-label">Navegar</div>
+  <nav class="s-nav">
+    <div class="s-link active" onclick="go('home',this)"><span class="ico">◈</span> Início</div>
+    <div class="s-link" id="nav-colecao" onclick="go('colecao',this)"><span class="ico">◻</span> Coleção</div>
+    <div class="s-link" onclick="go('top10',this)"><span class="ico">◆</span> Top 20</div>
+    <div class="s-link" onclick="go('rotacao',this)"><span class="ico">↻</span> Rotação</div>
+    <div class="s-link" onclick="go('estacoes',this)"><span class="ico">◎</span> Estações</div>
+    <div class="s-link" onclick="go('lacunas',this)"><span class="ico">○</span> Lacunas</div>
+  </nav>
+  <div class="s-divider"></div>
+  <div class="s-stats">
+    <div class="s-stat"><div class="s-stat-val" data-count="all">49</div><div class="s-stat-label">Frascos</div></div>
+    <div class="s-stat"><div class="s-stat-val" data-count="niche">20</div><div class="s-stat-label">Niche</div></div>
+    <div class="s-stat"><div class="s-stat-val" data-count="designer">8</div><div class="s-stat-label">Designer</div></div>
+    <div class="s-stat"><div class="s-stat-val" data-count="oriental">19</div><div class="s-stat-label">Oriental</div></div>
+    <div class="s-stat"><div class="s-stat-val" data-count="inspired">2</div><div class="s-stat-label">Inspirado</div></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- HOME -->
+<div class="pg on" id="pg-home">
+  <div class="home-hero">
+    <div class="hero-eyebrow">Pescara · Itália · Setembro 2026</div>
+    <h1 class="hero-title">Uma coleção<br>construída com<br><em>intenção.</em></h1>
+    <p class="hero-desc"><span data-count="all">49</span> frascos cuidadosamente escolhidos — do Nishane Hacivat ao Nishane Favonius Extrait. Uma jornada olfativa em evolução contínua.</p>
+  </div>
+  <div class="home-metrics">
+    <div class="hm"><div class="hm-val" data-count="all">49</div><div class="hm-label">Frascos</div><div class="hm-sub">na coleção</div></div>
+    <div class="hm"><div class="hm-val" data-count="niche">20</div><div class="hm-label">Niche</div><div class="hm-sub">Amouage, Xerjoff, Creed…</div></div>
+    <div class="hm"><div class="hm-val" data-count="designer">8</div><div class="hm-label">Designer</div><div class="hm-sub">Chanel, Dior, Hermès…</div></div>
+    <div class="hm"><div class="hm-val" id="hm-invest">~€5,5k</div><div class="hm-label">Investimento</div><div class="hm-sub" id="hm-invest-sub">estimado</div></div>
+  </div>
+  <div class="home-cats">
+    <div class="cat-card" onclick="goCat('niche')"><span class="cat-dot" style="background:#8A6FC0"></span><div><div class="cat-name">Niche</div><div class="cat-count"><span data-count="niche">20</span> frascos</div></div><span class="cat-arrow">→</span></div>
+    <div class="cat-card" onclick="goCat('designer')"><span class="cat-dot" style="background:#4A7EB0"></span><div><div class="cat-name">Designer</div><div class="cat-count"><span data-count="designer">8</span> frascos</div></div><span class="cat-arrow">→</span></div>
+    <div class="cat-card" onclick="goCat('oriental')"><span class="cat-dot" style="background:#C08A2A"></span><div><div class="cat-name">Oriente Médio</div><div class="cat-count"><span data-count="oriental">19</span> frascos</div></div><span class="cat-arrow">→</span></div>
+    <div class="cat-card" onclick="goCat('inspired')"><span class="cat-dot" style="background:#4E9560"></span><div><div class="cat-name">Inspirado</div><div class="cat-count"><span data-count="inspired">2</span> frascos</div></div><span class="cat-arrow">→</span></div>
+  </div>
+  <div class="home-featured">
+    <div class="feat-card" onclick="go('colecao',null)">
+      <div>
+        <div class="feat-eyebrow">Explorar</div>
+        <div class="feat-title">Coleção<br>completa</div>
+        <div class="feat-desc">Todos os <span data-count="all">49</span> frascos com busca por nome, filtros por categoria e por ocasião de uso.</div>
+      </div>
+      <div class="feat-arrow">↗</div>
+    </div>
+    <div class="feat-card" onclick="go('top10',null)">
+      <div>
+        <div class="feat-eyebrow">Curadoria</div>
+        <div class="feat-title">Top 20<br>da coleção</div>
+        <div class="feat-desc">Os vinte perfumes mais relevantes avaliados por qualidade, versatilidade e desempenho.</div>
+      </div>
+      <div class="feat-arrow">↗</div>
+    </div>
+  </div>
+  <div class="home-quick">
+    <div class="qn" onclick="go('rotacao',null)"><span class="qn-ico">↻</span><div class="qn-title">Rotação</div><div class="qn-desc">Qual frasco usar em cada contexto</div></div>
+    <div class="qn" onclick="go('estacoes',null)"><span class="qn-ico">◎</span><div class="qn-title">Estações</div><div class="qn-desc">Do verão de Pescara ao inverno</div></div>
+    <div class="qn" onclick="go('lacunas',null)"><span class="qn-ico">○</span><div class="qn-title">Lacunas</div><div class="qn-desc">O que ainda falta na coleção</div></div>
+  </div>
+</div>
+
+<!-- COLEÇÃO -->
+<div class="pg" id="pg-colecao">
+  <div class="pg-header">
+    <div class="pg-header-left">
+      <div class="pg-eyebrow">Inventário</div>
+      <div class="pg-title">Coleção<br>completa</div>
+    </div>
+    <div id="rct2" style="font-size:13px;color:var(--muted)"><span data-count="all">58</span> frascos</div>
+  </div>
+  <div class="pg-body">
+    <div class="toolbar">
+      <input class="srch" type="text" id="si" placeholder="Buscar por nome ou marca…" oninput="filter()">
+      <select class="sel" id="cf" onchange="filter()">
+        <option value="">Todas as categorias</option>
+        <option value="niche">Niche</option>
+        <option value="designer">Designer</option>
+        <option value="oriental">Oriente Médio</option>
+        <option value="inspired">Inspirado</option>
+      </select>
+      <select class="sel" id="of" onchange="filter()">
+        <option value="">Todas as ocasiões</option>
+        <option value="sig">Assinatura</option>
+        <option value="fresh">Fresco / Dia</option>
+        <option value="night">Noite</option>
+        <option value="formal">Formal</option>
+        <option value="loud">Impactante</option>
+        <option value="safe">Trabalho</option>
+      </select>
+    </div>
+    <table class="ctable">
+      <thead>
+        <tr>
+          <th class="th-sort" onclick="setSort('n')">Perfume <span class="sort-ind" data-k="n"></span></th>
+          <th class="th-sort" onclick="setSort('h')">Marca <span class="sort-ind" data-k="h"></span></th>
+          <th class="th-sort" onclick="setSort('v')">Vol. <span class="sort-ind" data-k="v"></span></th>
+          <th class="th-sort" onclick="setSort('c')">Cat. <span class="sort-ind" data-k="c"></span></th>
+          <th>Ocasião</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TOP 10 -->
+<div class="pg" id="pg-top10">
+  <div class="pg-header">
+    <div><div class="pg-eyebrow">Curadoria</div><div class="pg-title">Top 20</div></div>
+  </div>
+  <div class="pg-body" id="top10-body"></div>
+</div>
+
+<!-- ROTAÇÃO -->
+<div class="pg" id="pg-rotacao">
+  <div class="pg-header">
+    <div><div class="pg-eyebrow">Estratégia</div><div class="pg-title">Rotação</div></div>
+  </div>
+  <div class="rot-grid" id="rot-grid"></div>
+</div>
+
+<!-- ESTAÇÕES -->
+<div class="pg" id="pg-estacoes">
+  <div class="pg-header">
+    <div><div class="pg-eyebrow">Pescara · Itália</div><div class="pg-title">Estações</div></div>
+  </div>
+  <div class="sea-grid" id="sea-grid"></div>
+</div>
+
+<!-- LACUNAS -->
+<div class="pg" id="pg-lacunas">
+  <div class="pg-header">
+    <div><div class="pg-eyebrow">Análise</div><div class="pg-title">Lacunas</div></div>
+  </div>
+  <div class="pg-body" id="gap-body"></div>
+</div>
+
+</main>
+
+<!-- CARD DO PERFUME -->
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeCard()">
+  <div class="modal" id="modal-card"></div>
+</div>
+
+<script>
+// DATA
+const perfumes=[
+  // NICHE (33) — campo opcional img:"foto.jpg" mostra a foto no card
+  {n:"Kajal Lamar Noir Extrait",h:"Kajal",v:"100ml",c:"niche",o:["night","sig","formal"],p:"Frutas tropicais · maçã verde · violeta · bergamota · caramelo · baunilha · notas balsâmicas · rosa · gerânio · couro · oud · guaiaco · sândalo · musgo · âmbar",img:"https://fimgs.net/mdimg/perfume/375x500.97341.jpg",pr:194},
+  {n:"Memo Paris Flåm",h:"Memo Paris",v:"75ml",c:"niche",o:["sig","safe"],p:"Bergamota · laranja amarga · sálvia esclareia · acorde de pétalas · jasmim sambac · cedro · tonka · baunilha · almíscar · ambrettolide",img:"https://fimgs.net/mdimg/perfume/375x500.69613.jpg",pr:96},
+  {n:"Memo Paris Portobello Road",h:"Memo Paris",v:"75ml",c:"niche",o:["fresh","safe"],p:"Mandarina · folhas verdes · murta · rosa · sálvia esclareia · acorde de chuva · asfalto · patchouli · vetiver",img:"https://fimgs.net/mdimg/perfume/375x500.103562.jpg",pr:107},
+  {n:"Clive Christian E Cashmere Musk",h:"Clive Christian",v:"50ml",c:"niche",o:["sig","safe"],p:"Bergamota · laranja sanguínea · gengibre · pimenta rosa · pimenta de Sichuan · jasmim egípcio · cashmeran · folhas verdes · almíscar · guaiaco · ambroxan",img:"https://fimgs.net/mdimg/perfume/375x500.90448.jpg",pr:193},
+  {n:"Clive Christian X Masculine",h:"Clive Christian",v:"50ml",c:"niche",o:["formal","sig","night"],p:"Bergamota · cardamomo · gengibre · ruibarbo · íris · jasmim · canela · cedro · musgo de carvalho · âmbar · vetiver · baunilha",img:"https://fimgs.net/mdimg/perfume/375x500.4650.jpg",pr:173},
+  {n:"Nishane Hacivat",h:"Nishane",v:"100ml",c:"niche",f:"original · protegido pelo Rasasi Hawas Black",o:["sig","fresh","safe"],p:"Ananás · bergamota · cedro · musgo de carvalho",img:"https://fimgs.net/mdimg/perfume/375x500.44174.jpg",pr:185},
+  {n:"Xerjoff Naxos",h:"Xerjoff",v:"100ml",c:"niche",o:["sig","night"],p:"Tabaco mel · lavanda · baunilha · canela",img:"https://fimgs.net/mdimg/perfume/375x500.30529.jpg",pr:220},
+  {n:"MFK Grand Soir",h:"Maison Francis Kurkdjian",v:"70ml",c:"niche",f:"original · protegido por Nuancielo Ner Tamid",o:["sig","night","formal"],p:"Âmbar · benzoin · baunilha · ládano",img:"https://fimgs.net/mdimg/perfume/375x500.40816.jpg",pr:185},
+  {n:"Sospiro Vibrato",h:"Sospiro / Xerjoff",v:"100ml",c:"niche",f:"original · protegido por Maison Asrar Regent e LAB 8 Effervescent",o:["sig","fresh"],p:"Toranja · bergamota · magnólia · gengibre · almíscar",img:"https://fimgs.net/mdimg/perfume/375x500.75930.jpg",pr:250},
+  {n:"Mancera Cedrat Boisé",h:"Mancera",v:"120ml",c:"niche",o:["sig","fresh","formal","safe"],p:"Limão siciliano · groselha negra · patchouli · couro · baunilha",img:"https://fimgs.net/mdimg/perfume/375x500.15211.jpg",pr:120},
+  {n:"Parfums de Marly Layton",h:"Parfums de Marly",v:"75ml",c:"niche",o:["sig","fresh","safe"],p:"Maçã · lavanda · gerânio · baunilha · pimenta",img:"https://fimgs.net/mdimg/perfume/375x500.39314.jpg",pr:175},
+  {n:"Maison Crivelli Hibiscus Mahajád",h:"Maison Crivelli",v:"50ml",c:"niche",o:["sig","fresh"],p:"Hibisco · rosa · cassis · baunilha · canela · couro",img:"https://fimgs.net/mdimg/perfume/375x500.69069.jpg",pr:145},
+  {n:"Tom Ford Ombré Leather EDP",h:"Tom Ford",v:"50ml",c:"niche",o:["night","formal"],p:"Cardamomo · couro · jasmim sambac · âmbar · patchouli · musgo",img:"https://fimgs.net/mdimg/perfume/375x500.50239.jpg",pr:120},
+  {n:"Le Labo Santal 33",h:"Le Labo",v:"50ml",c:"niche",o:["sig","fresh","safe"],p:"Sândalo cremoso · íris · cedro · cardamomo",img:"https://fimgs.net/mdimg/perfume/375x500.12201.jpg",pr:150},
+  {n:"Initio Musk Therapy",h:"Initio Parfums Privés",v:"50ml",c:"niche",o:["sig","fresh","safe"],p:"Bergamota · groselha negra · magnólia · musk branco · sândalo",img:"https://fimgs.net/mdimg/perfume/375x500.66097.jpg",pr:200},
+  {n:"Initio Side Effect",h:"Initio Parfums Privés",v:"90ml",c:"niche",o:["night","sig"],p:"Tabaco · rum · canela · baunilha · açafrão",img:"https://fimgs.net/mdimg/perfume/375x500.42260.jpg",pr:250},
+  {n:"Sospiro Il Padrino",h:"Sospiro / Xerjoff",v:"100ml",c:"niche",o:["sig","night","loud"],p:"Groselha negra · rum · amaretto · bergamota · âmbar · baunilha · benjoim · ládano",img:"https://fimgs.net/mdimg/perfume/375x500.103313.jpg",pr:102},
+  {n:"Nishane Favonius Extrait",h:"Nishane",v:"50ml",c:"niche",o:["sig","night","formal"],p:"Lychee · incenso · pimenta rosa · rosa · nagarmotha · artemísia · oud · sândalo",img:"https://fimgs.net/mdimg/perfume/375x500.70388.jpg",pr:102},
+  {n:"Initio Oud for Greatness",h:"Initio Parfums Privés",v:"50ml",c:"niche",o:["sig","night","loud"],p:"Açafrão · noz-moscada · oud · nagarmotha · cumarina · almíscar",img:"https://fimgs.net/mdimg/perfume/375x500.53641.jpg",pr:126},
+  {n:"BDK Gris Charnel Extrait",h:"BDK Parfums",v:"100ml",c:"niche",o:["sig","night","formal"],p:"Chá preto · figo · cardamomo · sândalo · vetiver",img:"https://fimgs.net/mdimg/perfume/375x500.73645.jpg",pr:188},
+  {n:"BDK Crème de Cuir",h:"BDK Parfums",v:"100ml",c:"niche",o:["sig","fresh","formal"],p:"Abacaxi · mandarina · bergamota · camurça branca · sândalo · baunilha · musk",img:"https://fimgs.net/mdimg/perfume/375x500.51469.jpg",pr:198},
+  {n:"Matière Première Encens Suave",h:"Matière Première",v:"100ml",c:"niche",o:["sig","night"],p:"Café · incenso · baunilha · benjoim · ládano",img:"https://fimgs.net/mdimg/perfume/375x500.59060.jpg",pr:156},
+  {n:"Thameen Carved Oud Extrait",h:"Thameen",v:"100ml",c:"niche",o:["sig","night","formal"],p:"Cardamomo · nagarmotha · cipreste · cedro · patchouli · oud · vetiver · sândalo",img:"https://fimgs.net/mdimg/perfume/375x500.20509.jpg",pr:202},
+  {n:"Thameen Regent Leather Extrait",h:"Thameen",v:"100ml",c:"niche",o:["night","formal"],p:"Açafrão · rosa · jasmim · couro · baunilha",img:"https://fimgs.net/mdimg/perfume/375x500.43204.jpg",pr:185},
+  {n:"Xerjoff Casamorati Mefisto Gentiluomo",h:"Xerjoff Casamorati",v:"100ml",c:"niche",o:["fresh","formal","safe"],p:"Bergamota · lavanda · íris · violeta · almíscar · cedro",img:"https://fimgs.net/mdimg/perfume/375x500.52432.jpg",pr:122},
+  {n:"Creed Bois du Portugal",h:"Creed",v:"50ml",c:"niche",o:["formal","safe","sig"],p:"Bergamota · limão · lavanda · cedro · sândalo · vetiver · musgo de carvalho · ambargris",img:"https://fimgs.net/mdimg/perfume/375x500.3805.jpg",pr:141},
+  {n:"Creed Aventus Cologne",h:"Creed",v:"50ml",c:"niche",o:["sig","fresh","safe"],p:"Tangerina · gengibre · pimenta rosa · patchouli · musk",img:"https://fimgs.net/mdimg/perfume/375x500.51692.jpg",pr:155},
+  {n:"Amouage Jubilation 40 Man Extrait",h:"Amouage",v:"100ml",c:"niche",o:["sig","night","formal"],p:"Amora · groselha · incenso · rosa · mirra · oud",img:"https://fimgs.net/mdimg/perfume/375x500.87958.jpg",pr:345},
+  {n:"Birkholz Berlin Soul",h:"Birkholz",v:"100ml",c:"niche",o:["sig","night"],p:"Whisky · avelã · tabaco · sândalo · fava tonka",img:"https://fimgs.net/mdimg/perfume/375x500.59842.jpg",pr:110},
+  {n:"Nishane Hundred Silent Ways Extrait",h:"Nishane",v:"50ml",c:"niche",o:["sig","fresh","formal"],p:"Tuberosa · pêssego · baunilha · sândalo",img:"https://fimgs.net/mdimg/perfume/375x500.37602.jpg",pr:100},
+  {n:"Essential Parfums Bois Impérial",h:"Essential Parfums",v:"150ml",c:"niche",o:["fresh","safe","sig"],p:"Manjericão tailandês · pimenta timut · vetiver do Haiti · freesia · akigalawood · patchouli · ambrofix",img:"https://fimgs.net/mdimg/perfume/375x500.64338.jpg",pr:74},
+  {n:"Ex Nihilo The Hedonist Extrait",h:"Ex Nihilo",v:"50ml",c:"niche",o:["sig","night","fresh"],p:"Toranja · gengibre · lychee · akigalawood · amberwood · vetiver",img:"https://fimgs.net/mdimg/perfume/375x500.96233.jpg",pr:140},
+  {n:"Amouage Reflection Man",h:"Amouage",v:"100ml",c:"niche",f:"original · protegido pelo Khadlaj",o:["sig","fresh","formal"],p:"Alecrim · pimenta rosa · jasmim · neroli · íris · sândalo",img:"https://fimgs.net/mdimg/perfume/375x500.920.jpg",pr:250},
+  {n:"Amouage Decision",h:"Amouage",v:"100ml",c:"niche",o:["sig","formal","fresh"],p:"Cardamomo · bergamota · pimenta rosa · olíbano · mirra · zimbro · cedro",img:"https://fimgs.net/mdimg/perfume/375x500.103892.jpg",pr:370},
+  {n:"New Notes Cocktail Maracuja",h:"New Notes",v:"50ml",c:"niche",f:"uso compartilhado — assinatura da esposa",o:["sig","fresh","loud"],p:"Maracujá · pera · morango · gengibre · cardamomo · jasmim · baunilha",img:"https://fimgs.net/mdimg/perfume/375x500.83744.jpg",pr:93},
+  {n:"Frédéric Malle Musc Ravageur",h:"Frédéric Malle",v:"100ml",c:"niche",o:["sig","night"],p:"Bergamota · tangerina · lavanda · canela · cravo · musk animálico · baunilha · sândalo",img:"https://fimgs.net/mdimg/perfume/375x500.1801.jpg",pr:190},
+  {n:"Nasomatto Black Afgano",h:"Nasomatto",v:"30ml",c:"niche",o:["night","loud"],p:"Cannabis · resinas · tabaco · café · oud · incenso",img:"https://fimgs.net/mdimg/perfume/375x500.6472.jpg",pr:135},
+  {n:"Louis Vuitton Ombré Nomade",h:"Louis Vuitton",v:"35ml",c:"niche",o:["night","loud","formal"],p:"Oud · framboesa · rosa · incenso · açafrão · bétula",img:"https://fimgs.net/mdimg/perfume/375x500.49755.jpg",pr:130},
+  {n:"Nishane Ani",h:"Nishane",v:"100ml",c:"niche",o:["sig","night","safe"],p:"Gengibre · bergamota · pimenta rosa · groselha negra · rosa turca · cardamomo · baunilha",img:"https://fimgs.net/mdimg/perfume/375x500.54785.jpg",pr:180},
+  {n:"Amberfig Citron Soleil",h:"Amberfig",v:"100ml",c:"niche",o:["sig","fresh","formal"],p:"Mandarina · limão siciliano · gengibre · jasmim · vetiver · musgo de carvalho",img:"https://fimgs.net/mdimg/perfume/375x500.123152.jpg",pr:140},
+  {n:"Xerjoff XJ 17/17 Richwood Parfum",h:"Xerjoff",v:"50ml",c:"niche",o:["sig","night","formal"],p:"Tangerina · bergamota · toranja · rosa damascena · groselha negra · patchouli · sândalo · baunilha · ládano",img:"https://fimgs.net/mdimg/perfume/375x500.11703.jpg",pr:175},
+  {n:"Byredo Bal d'Afrique Absolu",h:"Byredo",v:"50ml",c:"niche",f:"original · protegido pelo Maison Asrar Belgravia",o:["fresh","sig","safe"],p:"Bergamota · limão · cassis · pralinê · almíscar · violeta · âmbar negro · cedro · vetiver",img:"https://fimgs.net/mdimg/perfume/375x500.108421.jpg",pr:177},
+  // DESIGNER (10)
+  {n:"Bleu de Chanel EDP",h:"Chanel",v:"100ml",c:"designer",o:["sig","fresh","safe"],p:"Toranja · bergamota · hortelã · gengibre · incenso · cedro · sândalo",img:"https://fimgs.net/mdimg/perfume/375x500.25967.jpg",pr:105},
+  {n:"Dior Homme Parfum",h:"Dior",v:"100ml",c:"designer",o:["formal","safe","night"],p:"Íris toscana · laranja · couro · rosa · sândalo · oud",img:"https://fimgs.net/mdimg/perfume/375x500.27417.jpg",pr:125},
+  {n:"Armani Stronger With You Intensely",h:"Giorgio Armani",v:"100ml",c:"designer",o:["loud","safe"],p:"Pimenta rosa · castanha · toffee · lavanda · baunilha · suede",img:"https://fimgs.net/mdimg/perfume/375x500.52802.jpg",pr:90},
+  {n:"Paco Rabanne 1 Million",h:"Paco Rabanne",v:"100ml",c:"designer",o:["loud"],p:"Toranja · hortelã · canela · rosa · couro · âmbar",img:"https://fimgs.net/mdimg/perfume/375x500.3747.jpg",pr:80},
+  {n:"Davidoff Cool Water",h:"Davidoff",v:"200ml",c:"designer",f:"afetivo",o:["fresh"],p:"Notas marinhas · hortelã · lavanda · alecrim · sândalo · musk",img:"https://fimgs.net/mdimg/perfume/375x500.507.jpg",pr:40},
+  {n:"V&R Spicebomb Extreme",h:"Viktor & Rolf",v:"90ml",c:"designer",o:["night","loud"],p:"Pimenta preta · lavanda · canela · cominho · tabaco · baunilha",img:"https://fimgs.net/mdimg/perfume/375x500.30499.jpg",pr:95},
+  {n:"Terre d'Hermès Eau Intense Vétiver",h:"Hermès",v:"100ml",c:"designer",o:["fresh","formal","safe"],p:"Bergamota · toranja · limão · pimenta de sichuan · gerânio · vetiver · olíbano",img:"https://fimgs.net/mdimg/perfume/375x500.50672.jpg",pr:110},
+  {n:"Trussardi Uomo 2011 EDT",h:"Trussardi",v:"100ml",c:"designer",o:["fresh","safe"],p:"Bergamota · limão de Amalfi · noz-moscada · gálbano · gerânio · violeta · sálvia esclareia · couro · musgo de carvalho · patchouli",img:"https://fimgs.net/mdimg/perfume/375x500.13067.jpg",pr:29},
+  {n:"Prada L'Homme EDT",h:"Prada",v:"100ml",c:"designer",o:["safe","fresh"],p:"Íris · âmbar · neroli · gerânio · patchouli",img:"https://fimgs.net/mdimg/perfume/375x500.39029.jpg",pr:90},
+  {n:"Margiela Replica Jazz Club",h:"Maison Margiela",v:"30ml",c:"designer",o:["night","safe"],p:"Pimenta rosa · limão · neroli · rum · sálvia · tabaco · baunilha",img:"https://fimgs.net/mdimg/perfume/375x500.20541.jpg",pr:46},
+  {n:"Dior Sauvage EDP",h:"Dior",v:"100ml",c:"designer",o:["fresh","safe"],p:"Bergamota · pimenta de sichuan · lavanda · baunilha · ambroxan",img:"https://fimgs.net/mdimg/perfume/375x500.48100.jpg",pr:115},
+  {n:"Boss Bottled Absolu",h:"Hugo Boss",v:"100ml",c:"designer",o:["night","formal"],p:"Incenso · couro · mirra · patchouli · cedro · davana",img:"https://fimgs.net/mdimg/perfume/375x500.96246.jpg",pr:80},
+  // ORIENTE MÉDIO (20)
+  {n:"Afnan Supremacy Collector's Edition",h:"Afnan",v:"100ml",c:"oriental",f:"substituto do Creed Aventus — original não comprado por escolha",o:["night","safe"],p:"Abacaxi · bergamota · bétula · musgo de carvalho · âmbar cinzento",img:"https://fimgs.net/mdimg/perfume/375x500.98689.jpg",pr:35},
+  {n:"Lattafa Asad Elixir",h:"Lattafa",v:"100ml",c:"oriental",o:["loud","night"],p:"Pimenta rosa · açafrão · tabaco · baunilha · âmbar",img:"https://fimgs.net/mdimg/perfume/375x500.117616.jpg",pr:35},
+  {n:"Afnan 9PM Elixir",h:"Afnan",v:"100ml",c:"oriental",o:["night","loud"],p:"Noz-moscada · cardamomo · couro · ládano · baunilha",img:"https://fimgs.net/mdimg/perfume/375x500.111894.jpg",pr:35},
+  {n:"French Avenue Liquid Brun",h:"French Avenue",v:"100ml",c:"oriental",f:"substituto do Parfums de Marly Althaïr — original não comprado por escolha (similaridade altíssima)",o:["formal","safe"],p:"Canela · cardamomo · flor de laranjeira · baunilha bourbon · praliné · guaiac",img:"https://fimgs.net/mdimg/perfume/375x500.94713.jpg",pr:35},
+  {n:"French Avenue Amber Empire",h:"French Avenue",v:"100ml",c:"oriental",f:"substituto do Clive Christian Blonde Amber — original dispensado por preço; tem decant",o:["night"],p:"Âmbar · madeira de caxemira · cana-de-açúcar · fava tonka",img:"https://fimgs.net/mdimg/perfume/375x500.116876.jpg",pr:35},
+  {n:"Nusuk Al Mukhtalif",h:"Nusuk",v:"100ml",c:"oriental",o:["fresh","safe"],p:"Pêra · melão · abacaxi · bergamota · rosa · jasmim · lírio · patchouli · almíscar · âmbar",img:"https://fimgs.net/mdimg/perfume/375x500.100737.jpg",pr:30},
+  {n:"Riiffs Momento Extrait",h:"Riiffs",v:"100ml",c:"oriental",f:"substituto do Montale Arabians Tonka — original fora da coleção",o:["loud"],p:"Açafrão · rosa · oud · caramelo · âmbar",img:"https://fimgs.net/mdimg/perfume/375x500.103346.jpg",pr:30},
+  {n:"Afnan Turathi Blue",h:"Afnan",v:"100ml",c:"oriental",f:"substituto do Bvlgari Le Gemme Tygar — original não comprado por escolha; o Tygar é próximo do Sospiro Vibrato",o:["fresh","formal"],p:"Bergamota · tangerina · âmbar · almíscar · patchouli",img:"https://fimgs.net/mdimg/perfume/375x500.70839.jpg",pr:30},
+  {n:"Rasasi Hawas Roxo",h:"Rasasi",v:"100ml",c:"oriental",o:["fresh"],p:"Maçã · canela · flor de laranjeira · âmbar cinzento · aquático",img:"https://fimgs.net/mdimg/perfume/375x500.46890.jpg",pr:40},
+  {n:"Rasasi Hawas Black",h:"Rasasi",v:"100ml",c:"oriental",f:"protetor do Nishane Hacivat",o:["night"],p:"Abacaxi · toranja · patchouli · musgo de carvalho · âmbar",img:"https://fimgs.net/mdimg/perfume/375x500.96817.jpg",pr:40},
+  {n:"Voux Zingy",h:"Paris Corner",v:"100ml",c:"oriental",o:["fresh"],p:"Manjericão · limão · cidra · verbena · musk",img:"https://fimgs.net/mdimg/perfume/375x500.103828.jpg",pr:30},
+  {n:"Pacific Aura",h:"Rayhaan",v:"100ml",c:"oriental",f:"substituto do LV Pacific Chill — original não comprado por escolha",o:["fresh"],p:"Tangerina · menta · groselha · manjericão · ambroxan",img:"https://fimgs.net/mdimg/perfume/375x500.109709.jpg",pr:30},
+  {n:"Aromatix Magnetiq",h:"Aromatix X French Avenue",v:"100ml",c:"oriental",o:["fresh"],p:"Lavanda · bergamota · flor de laranjeira · íris · sândalo",img:"https://fimgs.net/mdimg/perfume/375x500.117529.jpg",pr:40},
+  {n:"Marwa",h:"Arabiyat Prestige",v:"100ml",c:"oriental",f:"substituto do LV Imagination — original não comprado por escolha",o:["fresh"],p:"Bergamota · gengibre · canela · chá preto · ambroxan",img:"https://fimgs.net/mdimg/perfume/375x500.107084.jpg",pr:30},
+  {n:"Faris Al Arab",h:"Maison Asrar",v:"100ml",c:"oriental",f:"substituto do Clive Christian Blonde Amber — original dispensado por preço; tem decant",o:["formal"],p:"Licor de cereja · madeira de caxemira · âmbar · sândalo · fava tonka",img:"https://fimgs.net/mdimg/perfume/375x500.115637.jpg",pr:45},
+  {n:"Khadlaj Shiyaaka Men",h:"Khadlaj",v:"100ml",c:"oriental",f:"protetor do Amouage Reflection Man",o:["fresh"],p:"Alecrim · petitgrain · pimenta · neroli · íris · cedro · vetiver",img:"https://fimgs.net/mdimg/perfume/375x500.86143.jpg",pr:15},
+  {n:"Armaf Club de Nuit Élite",h:"Armaf",v:"100ml",c:"oriental",f:"substituto do Creed Wild Vetiver — original ainda não comprado; vira protetor se o original entrar",o:["fresh","safe"],p:"Chá verde · bergamota · maçã · pimenta rosa · pimenta de Sichuan · rosa centifolia · gerânio · cassis · vetiver · âmbar · cedro · almíscar · cashmeran",img:"https://fimgs.net/mdimg/perfume/375x500.139792.jpg",pr:56},
+  {n:"Armaf Club de Nuit Intense Man",h:"Armaf",v:"105ml",c:"oriental",o:["sig","loud","fresh"],p:"Limão · abacaxi · groselha · bétula fumada · almíscar",img:"https://fimgs.net/mdimg/perfume/375x500.34696.jpg",pr:40},
+  {n:"Maison Alhambra Jean Lowe Azure",h:"Maison Alhambra",v:"100ml",c:"oriental",f:"substituto do LV Afternoon Swim — original não comprado por escolha",o:["fresh","safe"],p:"Tangerina · bergamota · laranja · gengibre · âmbar cinzento",img:"https://fimgs.net/mdimg/perfume/375x500.100480.jpg",pr:30},
+  {n:"Aurora Scents Black Obsidian",h:"Aurora Scents",v:"100ml",c:"oriental",o:["fresh","formal"],p:"Bergamota · elemi · osmanthus · jasmim · patchouli · musgo",img:"https://fimgs.net/mdimg/perfume/375x500.107708.jpg",pr:40},
+  {n:"Maison Viegas Heaven",h:"Maison Viegas",v:"100ml",c:"inspired",f:"substituto do LV Imagination — original não comprado por escolha",o:["formal","safe"],p:"Cítricos · gengibre · chá preto · incenso · ambroxan",img:"https://fimgs.net/mdimg/perfume/375x500.100398.jpg",pr:23},
+  {n:"Maison Viegas Grand Tygar",h:"Maison Viegas",v:"100ml",c:"inspired",f:"substituto do Bvlgari Le Gemme Tygar — original não comprado por escolha; o Tygar é próximo do Sospiro Vibrato",o:["fresh","safe"],p:"Toranja · bergamota · gengibre · âmbar · vetiver",img:"https://fimgs.net/mdimg/perfume/375x500.125457.jpg",pr:23},
+  // INSPIRADO (7)
+  {n:"Azza Parfums Gran Everest",h:"Azza Parfums",v:"55ml",c:"inspired",f:"substituto do Creed Himalaya — original não comprado por escolha",o:["fresh","formal"],p:"Bergamota · tangerina · zimbro · noz-moscada · cedro gelado",img:"https://acdn-us.mitiendanube.com/stores/002/712/993/products/37e290681d6e8751f437ec7e27bf3e31-2d5e74403b5e2649e417709061611400-480-0.webp",pr:12},
+  {n:"Maison Asrar Belgravia",h:"Maison Asrar",v:"100ml",c:"oriental",f:"protetor do Byredo Bal d'Afrique Absolu",o:["fresh","safe"],p:"Bergamota · cassis · limão · caramelo · frésia · lírio-do-vale · sândalo · cedro · musgo · almíscar · vetiver",img:"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCAH0AXEDASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAUGBAcBAgMICf/EAFoQAAEEAQIDBQQFBwQMDAQHAAEAAgMEBQYREiExBxNBUWEUInGBCCMyQpEVM1JicqHBFrHR0hckQ1NjdIKSk7KzwxgmNDZVVnODlJWi4SU1ZPFERVSFo8Lw/8QAGAEBAQEBAQAAAAAAAAAAAAAAAAECAwT/xAAjEQEBAAEEAgMBAQEBAAAAAAAAARECEiExA0ETMlFhIkJx/9oADAMBAAIRAxEAPwD6pREQEREBERAREQEREBERAREQEREBERAREQETcBdXSxtG7ntA9Sg7IvI3Kw62If8APC5bZgf9maN3wcCg9EXAkYejm/iud90BERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBcE7DdcoUHzdr36UuXxeWsY3AYOtGyF5j9ouOL3OIO24a3YD8Sqa/6ROu7zmceTMQf0bWqsYPxK11rDIOfnsmHnn7VMAR+2dlj4eu+84AM4t3cuXJrv0uvh4INnydsGqZ6755ctlOBjuB/wBcGcJ9QDyUTk+1HVE0j6f5TvB4Zxkm4dtviFDRYy7HE0sgBLJjwtdsA7fbd7/Ppy/91iz6dniMkTnDuOT3P4gHyu3J238GoI7Ia01FahM0mYvd253CAbjzud9uQVcu5LKzHZ+Qtvc7c8JneT8+alL/ABxNa6V0Xft2AAJDWAHwUFYeyMFsbh7w2c7c7nnug8HPuFxBsykg8z3rtgu0Ny7C73blhgPiJnD+K8nWOfTYA77bnnyXInDxsWNHLbb5oJinlsvDM3gyVpruZG9h4DtvI7q1Y3XOfhq9+zLXeFh4S32t4Pl0VLpPY8GKUgxu323J3bv6qex0ExeZWSRumbu1gJ91zT4HfofVBf8AHdpWqI5hXGUvNkDO8924dg3z5qQb2z6whbH3GZyYMoJZu9r9wOp2KqTsJP7kcBb3LyJOPcEwv33259W8zyXjLibfdd8+Dgkkcd9gD3LvNu33D4oL7X+k1rnEvZ3ktTIR7A8Nmtwkj9puy+iOyrtCd2j6b/KktD2GeOTupIw7iaTsDuD125+K+GJpiyclzS3nybseXp8uey+tvosTun7PLLndBfkA5eHC1BuRERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAXBXKIPhTte0fkdPamtSZeJ0D55XyxsY0cJaXHYgqqYp9x54atvuNvHhBK+h/pW4W5Znx+QERbSZAY3TkbgP4ieH47L5woTTxTcNXu3Hzfvsgt0GmspdYHyajuN38GMaF439LOijPHmMjKR+k8LMxztSSRDureOhG396c4/zrrcxucmaTPmIR+xXA/igpGRxLInO+vnef1nKFni7s8iT8VZsnj7EPFx3jIf+zAVbsNcHHd2/yQYhe4LljnE9Vw4geAXLDueQCDNrV+9I95w+BVioYaOdoAtWoyfFr1BUYnuI4ZC35KzYvEX5C10eSEfxiBQTGP0pOR7udyMY/aBXOTw+WosPdagsSN25iSNpWbFQ1BHGO5ylN37dc/wKwMnZz1aJwtmhM3zYHNKCvMhmyFxtaSVzpCdg5rV9pdhGlsppHQzKOUaGSSTOmY373CQNt/VfImhsLkNRalrxY+LvrJkG0LRzPmvvyswx14mOGzmsAPx2QeiIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg0x9J/UGMp6LjxFiV4t2pmyxsazf3W77k+XVfJWLh723vG8Ab9XBfWf0m9NU7el4s9KSZ6rhA1p5tIcSd/jyXyNVijmskPbu3foOSDY2KlgrRfW3YQdvHYfxXW7mKPC4e11nH/ALRqwMNpzEysDpKEEhPi8brMtYLHQNd3OOrN/ZjCCp5TJ1CX7GB3wduqtcsMkceGNnyVqyWNLS7hqtaPQBVe5WewndmyCOO5P2AuWO4T9gLh0bt+hXaON2/QoJXH244XAvji29VbsXnanujirt/ygFUqFV8jgO73VuxOKgPCZakTv2mhBZ6d+rIzdtyuPTjaf4qKz7xMx3DPC4eg/wDdZrcHiJmcL8dVJ/YCg89p/HQMLoKzIiP0CQgs3YJnsbprtEpz5CZ7I38UXE1m4BcNhv6blfawO43XxD2F6Zqao1vUxtpzmRjeXjZ9r3Rvtv8AJfbwGwAHggIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiDQH0q8zm4cdQxNEBtGYGaZxYDxOB2A3PTZfMGNs+z2d5K5ndv0aAvsL6S92nD2fdxNPAyxJYYY2PI4nAb7kL48x7XPtEsAdz8CgudTPZBsbW1sBI7l1MjGrrcv5+YcX5JjjHrZH8ApHDxvMLeJrQQPF3/ssi/NE2Ih5O/p/wDZBr3KT5Iud3sMbN/KUlVyz3m5LwPxVxy7qzi735PwVUvGPiPCXII0kLlhG/LfdcODfVdoQ3fxQSVAzAjga0n1OysuPkzHLuakb/8AvtlA48xcQ3L/AJBXbDSVg1o4n7+oQZdK9nIW7uwokHjw2G/xUZm83YLXCfCTQ78t92O/mVuZI3ux3YBPqf8A2Vf1IyR8RAi/9QQc9k2YzeG1fTyGHG7+8DHR8Adu08iNuvRfdrSS0EjYkL4z+jjcp43tGqG9aghD2vYzvHbbuI2A+K+zUBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAQnZEI3QfMn0sMlTtX8bWr3qsk0MLxJGJQXMJd0I8FobBU5XSBzW8Q38CFIa2eLGpslIQ521qUEk8zs8qMrStgLSySQNHN2zj7zPP47oL9TIZGAQW7deY/pXjefVkaSZnDbqNgqrJxPj4WzPG7w50jnvIgYdtgfMleFlzIX942A8cmwZWcTuRuffO55IPbLnHbOAsS8XlwKq2vZSTwyyn4tXtMxso4WHiaCOKwR059OqxJGMA3czgbw8h4u59UGK4Rb8nP/wA1cxiIHcueP8ldzFu87tAO/Jo8OS4EYPPYbgDl4IJjHuogAumlB/ZVlx1mm0t4ZpCP2VRoR9bxNiLvtcUXkPRTdOCIxcPEOFx3E+x907j3Tt+CDZNKauYg4P3+OwWFlmyWI3FsR4fPcf0qqw7OnL+FzGs2Y6IOdy3P5zrzC957LmsEQmee7b7xEjvrAejx6eYQZGlGMo6qpWLU8UEbJ2OcXu22AcF980rtbIVYrNSeKxBI3iZJE4Oa4ehC/OjhImHePcSOR3dvuR1PPwX2d9G+RsnZhVLeLYWJhsTvtzHRBtBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAXDjsN143b1bHVZLVyeOvXibxPlkdwtaPUrQvaL9I8Okfi9IHh6tdfkbzJ/Uaf5yg+ee0a5Up6pycQdLFvZkPA8HcbuKrePzdCGYGRs0gDuL3R4qwaiyNvP3LGUyM8lywSQJZNnFx8Sfh/BRs7G1+B23uu23cOh8BugzItXYeGIRfky1IwO7wbt397z6rGn1TBYkkljxE/wBYNnOLB7wXgZCDIA53Bs0gbbjy3WY0Hunsi3cQeONgO4IP2gP50ETZypfF3bMXIxo6NMYACiprM0jgXV5A4jl7vgrC6dxi7kl3AfehPz+zv4rwe9zowyRrhE3chreZYT6eHw8UFcfI9uxcyRu/TcdVyJXsOxjkHhsWqXbI50cYa+ItLt9nHYM9R15rtXcQ0GPvHSl+7S4bfPn1KDFitPre+akhI8281nVs+I2ujfjJHNcfeAYOa4jnBJeHEyNI4OH3ue/U/Pw8d1IwN4WusOJEkY4uIEc3noD/AEeiDLi1hj4wyV+IsiSMcLXBg5DyWO7VOEDG7VbUJaTw8um/XxWNYdKNmblr+74/d+8T4/8A2XWWMPc1nFvuQXbdCB5oMd2SpSPDopJADtsHAr7c+jjAK/ZdSAjlYHTyu+s6u3PUei+NK7Q+UNYG+60Ee6PdK3L2eduuc0kK9e7KclituD2eVw44tvusd/MCg+tUUDpDW+D1vjhewtxs7RykjPKSI+Tm+CnkBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQFVNe9pGD7P6HfZKcPsvH1NVjhxyf0D1Kta+cO2vst1TrPW1mxjaRlrOYwMkL2ho2aBtzPmpbJ2Ncdona/mNeXCy3ejhpb/V0oHHgj9T+k71PRU2MTWrDnxN3HDwsPTb8Vfan0YtbyTBz3Y+Efrz77fgCrBT+jHrFmxGVxEf8Anu/gsfJpXbWpIcBfdBwd3CAQ47ulHIlcnS9qWvwSS1ATGGkd51I6c9lu6D6Ner2jZ+ocU39mB5/iskfRo1G9p49UUW/Cof6U+SG2tDnT767YnyWKpIaWyDiJB38uXNRs9ERxFntUW7Ts3mTy9eS+gpfouZuTk7V1QD/Ez/WWHJ9Eu+/85rGt8qh/rJ8uldtfPslyKIGN72GLfcNaD7nnw+SwhlA1zzx7kjbnvs4eR8wvod/0Qi7cv1nD8qh/rLyP0QIfHWcX/gz/AFk+XSba+d/b6u8ezXcTepB2A+C5dlmcco4d2SbeHNx/W819Cn6HkBO41pF/4M/1l1P0Pogf+ecP/gz/AFk+XSba+f612FjmvaQHg/eG4HLkR6rMbYryOZvINh15ndx8ee3mt6f8EFv3dZQf+EP9Zekf0RJ2n3NX1j8ap/rJ8uk21pSpRNlhEk9YOe7dxBOxHhy2WdFp2QSSFs9ZzHNAaTId+XmNv4rc7Pon5aIfU6tpE+tU/wBZe7Pov6nYPc1PjnbedZ39KfLpNtaZh01djc97DXIJbse9G5AH7l5yYbIV4JWmIbOkLmlsjTt6rdp+jfrJjdm53Ev+MLwvKb6OWtCznk8O7/JkH8E+TSba1Vp/VWV0dkG5DG3nUbI2JeD7r/Rw8QV9P9lfbpjNbsix+UMNLLkADhd9XOf1fI+hWl8p9HHWb9wJcY/9mUj+cLx052Ea0wuYrWJqbJGRytPFFK07c+vVJ5NN9ptr7ERdY/zbdzz2C7LogiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg4eeFpPkN1Cxl0juLmSSpe0Ca0vC7hPAdj5clrrXteW/gMfjY7tuqclerVnTVJDHLwE7v4XDpyaVw83pvSlsTrXE5XJwUIDKJLPtPcPe0BkvcPDHhp358zuPQFWiMnZUvL9m2ns5pylgXVpYIMcP7TkrzOjmgdttu1457nfn57r17JbBn7PsM18r5pa8RrzOe4ucJGOLXBxPPfcLlP4q4OkIB3OwCrWqNZU9PTY6qQ63dyVltaCtC8cZ36vP6rRzK6dpeUhxWhc1NK4tdJVfDEAfedI8cLQPXcqM0V2dYTS1WpejxwblnVmNmsSvdI8OLRxAFxPDz36K+sjLra0pWNTZLTdk+x3aYZJH37w0Wo3DfjZ5gHkQpB0rXjiZI17d+rXbhYGqNHad1bHE3OYqC4Yfzcjt2vZ6Bw2OyoHYrJFi4NQaSkBhu4rKzu7h597uHkGNw35lu3ipZMK2NITv1WNPYihHFNKyJu+273Bo3+ayZPdK1d2ysqantaZ0S0Ce1fycdieEO5srRgl7nbdAd9lmTNwtWLNa/x2O1BicBQ4cpksjLs6GtKD7PEBu6V5G+wH710j7QKEetrelMkz8nWI4mTVJp5A1lxp68BPiDy2WbprQ+m9Hd7+QcRWoul5PkYN3uHkXHc7ei9tSaUwWrKrK2cxVa+yM7sMrfeZ+y4cwnBylYZ4pd+5mjl26ljw7b8F7sJ81qbstpY7Q+vNXaRDG0hPLFex0LnH6yEs2IaT12PVbYYd+YTVMUjKZOIxvJI1g323c7YLDfq+qzVFHTlXe3bsRSTymF4IrRtHIv/aPIKi9sDIM5WwOk4z3tzK5OFxga7ZwgjPFI87cw3blurzpbSGB0hHLHhcbDTMxHePBLnv26buJJ2VkmOUrP0vqynqWi6xA4wzRSvgnrSPHeQyNcQQ4fLf5qbMjuHqtY9qOhcKcTe1XDQdHlapinfNA9zS9rXtLi5oOzjw79VsevbhvVorNZ7ZIZmCRj2ncOaRuCFb+jxvTNr15bErg2OJpe9xOwaANySq/htR1dQRmSo2ZhEUUxZI3ZwbI3iafw/mULrfB0NYa1xGDyTrMlSvSnuWK8M7o2ybvY1gk4Tzafe5HrsVk6gwtaHUWEzdZ09aaKVtJ7YXlscsRa7ha9vQ7Hp5brNwrYOJe59NvEd9iQsxR+DeX0zv4PIUgvZo+scr2IiLSCIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIOsoBjcD0IIK13ias2Vz9Z1uQujwMbmMZtyksPLm8Z+EYG37ZWxJfzbtvIqjactRHNZqsSBK6Vtho8XM5s3/zmELh5m9KyN67jkqRkqX9jzUUOoMfNIzEZa4yDKUid42SyHZthg+6eLYOHjuru3kqd2lWIcrHidJwPD8hk70Mndt5mOCN4e+Q+QHDt8SuWjtaxMFiz2iZo6ty8skmMp2nx4jH77RDgdw9+8fecSDt5K/ynfffqqX2XX4qWMsaUsubFlMNPLHJA47OfEXlzJG+bSCOauUhV1XkjEmVJ1p2eUtUTNylKxNidQ12bVMnVdwvaR0a8dHs38CrrMVAao1TidHYuTK5m3HWrRDlxH3pD4NaOpcfILM/itYu7Wc1lNH08fWhhg1hcyTsG/cbxwzM+3Nt5cPvAeZVq0d2d4vR8k11s1jI5i0NrWTtv45ZfMD9FvoFrOPT+Ywuncd2j2MdMbLM9Nm7VAN+sZUmHB0/SDQHbeq3NhM/i9TY6LJYi7Dcqyjdskbt9vQjwPoVdXE4Iz08U5p15Lm0rustCYjXEEIvtlht1iXVb1ZxZPXd5tcPD0PJUup2mZrTmmM5hcl3d7VOIuxYyrIRs22ZuUMrh8Nyfgtl5bM4/AUZb+Ttw06sQ3fLK7YD+k+i0rPp7MatxuoO0ajQmEkmTqX8bTe3aSetW3Bdt5uBJA9F00c9s1tfQnZ7W0rPLlb1qbLahtM2tZGw7idz5lkY6MZv4BXmPqq7pPVmI1ljI8nh7bJ4ngcbQffhd4se3q0j1Vij5KW/oyHMZNC6KRrXxvaWua4bhwPUFa4kv/wBiDI2aTHSz6es0rF2jBI4uNWeIcToWn9BwIIHgtkxjcLWPaVDJrPNOwWLAsS4jHWrNhzOYZM9nDFET+kdidldJVl0bpyTGVJMtlJXWc7lWsmuzu+7y3bEwfdYzfYD4lZGo6b7+KnhjcWSt4Zonjq2RhDmn8R+9e+nNQ1NU4CllqTw6OeIFzR1jeBs5hHgQdwQu9+ZtetNNIQGMY5zifAALNzlYltKymxiW2D/dnueB5AnkFMKF0dt/J+s3bYtBaR6gqaXs0dRyvYiItIIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg6Tu4IZHDwaT+5a7zVGLH2NNZqv7k9eyylK7fbvIZ9w4O8/f4XfELYVpgkrSsJIDmEEjr0VRzWmsfqjBuw2SZNJTkLC4RyFj92kEEOHMHcLh5r01pTbntgY+SUgNY0ucT5BVDsrxNezjX6xtN77L51zp3zv5mOHiPdxN8mhoHIeKqdbCu1hNi9G5vJ3LONx5vGUtmcx98QytjiD3DmQ0O3PmQFtjCYqng8VVxmPi7mpVjEUUfEXcLR0G55lcuuG+1U7VcBG7CS6poAV85hGe1V7LOTnsbzdG7zaRvyKsmLyUeYxVXIRFvDYhZLs078PE0Hb96zMhRgydKelaj72vYjdFKzfbiaRsQtV6r0tj+zm1hc1pcTY978hDSsU2zOdHbjkOxBaSfeHUH0V7GyJi1jC5zmtb4lx2AWo9F4up2jajzOss7G26yjfkoYmtJ70VZkR2Mgb0L3HxUlPp+p2h6/1DW1BLPYx2DfDWrY1sro43FzOJ0rw0gu36BWzB6YxGksf+TcJSbSqd46XumuJHE7qeZJU6hGVI0OBDhuDyIK1RqrDVOzPV2E1Tgmto0crdZj8tTjPDDJ3n2ZQ3oHA+K2w/qVCam0xiNV48Y/NUmXKoeJO7eSBxDoeR9VnTcVbEk2eKbcxSskbvtxMcHD9y5e9kDDJI9rGDq5xAA+a1DntNUOy/UumcjpR01NuSyLKFrGCVzorMburg0k7Ob13Czb2Jrdo/ahnsNqCaaTGYKGAVsY2UsZO543dK8Agu8grt9mXerjanad2k5izlHNuYbTL461OoTxQyWHN4nSuHR23QLacJ7toa3ZoaNgByACgtMaNwWjYJ6+Cx0dGKw8SSNY5xDnAbb8yfBTjfVS3PRI11rLD1tDamxGtsJG2ibV+OjloY/djtRSnYPc3pxNPPdbciLHjiZIyRvg5pBB+YUFmtPYrU+NONy9Rluo57ZDG4kDiHQ8juqvQwNHQGvsFUwJlho5pk8dnHd657AY2cTZWgk8PkfitTlOlv15mpcFo/JW6crI7vdd3XJPMPeQ0ED0Lt/ksvSOl6ej8JDjqzS+TYSWLDub7Ep+09x8SSqLo7RmG13TOqtQskyWQtWpHNa+ZwZUayQhsbWggDbhG62luduaW+j+qRVoVdM9ok8NENgqZ6m+1JXbyYLMT2hz2jwLmvG+3UhZup2e2VqtE/m7VyKOQb9WA8ZHz4dvmumutB4bWkMT8kyVlmm17qlmGZ0b67yPtAgjxAPPyVa0jXGqcjU1FlZZJbmOqV46zWyFsbXPi3klLRyJdxdT0AWf6raenmBlKQAbAyudt8ealFH4PY0tx4vKkF7NH1jlexERaQREQEREBERAREQEREBERAREQEREBERAREQEREBERB5XOL2Wbgdwu4HbHbfY7KgazlyTNN1YcXk34+9es1qzLcbA5zONw4iGnlvtuthSgGNwPQggrW+PgsZrO0K1l49nwIfI8AfnpyXMjJ9AwE/EhcfN6a0vLIdmEU+DxdTF5nIYvI4njdXycJDpnOfzk4weTg88yD47Kb7NcnYy+hsRcuWnWrb4S2eZ+3E6Rri12+3juFODcHkqNWq2ezfUre7nEumc7dIMLh72PtSc92n+9vd4eBK4TnhtYu0HLS4LRWbyMU5glgqSOilHVr9tm7eu+yrml9Bulbis/qLM5PM5CKBk0MVtwEdaRzQSQ0Dm4b7blebqlztVyr5bcwg0jjbZbFWaPeyUsZ5uef72HDkPHZX6UjoOWw8FrqYTtSdT9nVXOZcZqllslg8r3YhfaoSAGZg6B7Tydt4FQnZFlchkcFlauWyNi/exuWs1JJbBHecLSODfb0WxpTsta6r0Zm8VmbWrtD2ooslYaDdxk4/tfIcI5H9WTbkCp3MKvLhzWuO2TIZGCjgcXicnYx97K5aGs19Z20nd8+Mj0A2Xe72vUx2f1dR0aM02Suz+wQYwn6z2zfYxH0B5k+SaU0NlpM5Fq3WmRZkM4yMsrVYW7V8e13UMHi7wLkkxzVZWC7LsdhsyzN38rlM/lIQWwWcjLxCAHrwNHIH1Xpqjs3xup8pDmY72Qw+YgZ3bb9CTgkcz9Fw6OHxVsJ3XI5LO65yYa97Lb2Sh1Hq7TeVzN3Kz4y1GYJLhHGYHM5Hl4brY4GypGr9B2shlodUaYyP5J1HWj7rvHN4obcf8Ae5W+I8j4LwxPatW/khlstnKjqWUwsvst6g07uM/RjWeYedtlbM8w6ZnaxlL9DB4ypjL9ijfyWUrVI5ID9Zwud723+Sp/S3Z9V09lpMxZyuSzWUfH3Lbl94c6KPfctYBybv4qu6R0jms3mKurtbzMN6Bpdj8VCPqceHDqT96TbqfBbLjV6mEa81tpA6TpZLVOn83k8UBKy1apQPHcSEvAe7hP2dwSTstntkbMxskZDmOAc0joQehWLdo1spRsUbcQlrWI3RSsPRzSNiFRcRlLvZtNY0/nLTr2KgpS3MZccPrO6iHvQP8ANzQRsfEJ2MjXmMvam1HitPV85fxdSSpYsXW0yA6eMOY0MJI5A8ThuOa88np6PD6iw2Ux9uxTh3jx09KPbubEYa4R8QPQt8CFn6LxWSd3+pc/IHZbKxs+oaPcpQD3mQt8zz3cfErM1NTkv4qaOB3BYjLZ4X+UjCHD8dtvms284ItOBk46bvR5CklDaSe6fEiw7l38j5APIE8h+CmV7NH1jnexERaQREQEREBERAREQEREBERAREQEREBERAREQEREBERB1l/Nu+BVF07ah/L2brtI43vbM39ZoJYT8nNP4q8zOLYnuHUNJ/ctbZLHtw7tOZqIubPWtMqykH87FYOzg7z98tcPULh5vTeldAFT+1GeO1i8XgYXB2QyeSrNgYOoDHh73/Bob1VwB3J3VK7OMNHl5Jdd5LinymSfIKxed21KoeWsjYPDcDcnx3XHT+tV69ltuODR76NjaCfD2LFa41/Lgc17ncR9C0g7rMl7R9GtG51Ni/8ATBS2eq16+FzU8MLI5bFWR0rmjYyERkAnzO3JfPHZV2T4ztDwdvI5C/cqyQWO4a2EN2I4Qd+Y681uSXmo3JL2laMHXU+KH/fhYM3apoaI7/yrxO4/w4VUs/Rl028f/OsqPkz+hRU/0V9Mybk5zL/5sf8AQmNH6csmva7IaeWjyzdU0e/ivy5NjDd3jbPINnO4dvLwVlPaxoLfcatxH+nCocn0T9LE7/l3MfhH/QvE/RN0r/05mPwj/oS7L3TlsIdrGg/+tuI/04XP9lnQX/W3Ef6Za7/4J2lf+nMv+Ef9Cf8ABO0r/wBOZf8ACP8AoUxo/VzWxP7Legmnf+VuII/7ZVnJXex/M5ixl7GpqJs2Z69mZrLhax74fsEt22+PmoNv0T9K+ObzH4R/0LJh+ilpRh5ZvMH/AEf9Cs2Tqpy2VD2qaGeOL+VWK3PlKsyPtS0R1Gp8afhItcQ/Rd0u3pmsx/8Ax/1VKVPoz6XYQTlsufmz+qmNH6ctg1e0jR9iWKKLUWPfJK4MYwP5ucTsB0VV7W4LeoMlVw+NidNaqY27elDR0aWBrG/FzgRt6LXuuNA43QGs9J1sZYtTst2WPeZyDsWyNA22A819IiCGKxJYbEwTPAY6Tb3i0E7DfyG5/FLJMWCLw2Vq5/CUsrSlbJXtQtkaW+HLmPQg7gj0XTITsq1ppnkBkcbnEnyAVcxWLGl+0G3QobxYvM1H3xVB9yGwx4EhYPAODwSB4hSeqYG26tWi4kMtXIopAPFgPER8w3b5rnZy0seiiTpyoHfaaC0/EFTii9OxiOlJsOEOlc7b481KL2aOo5XsREWkEREBERAREQEREBERAREQEREBERAREQEREBERAREQedlgkrysJIDmEEg7Hoqhn9O0tU4J2EuusMrScG7oJTHICwgtIcOYO4Ct9oE1pQ13CeB2x8jt1VA1hbycWlYW4e+2lkbM9avFaMQk4C97QTwnkeRK4eb03pVKvTyOqm4zRd7OZCOCnJdbct1pe7nuMgkayNpeOY34wXEdeFbP09hquncJTxFLvTWpxiKPvXcT9h5nxKqFjs4sxYXGQ4bOz0czjHSyMyT4xIbDpecveMPIh557eGwU/oHKWs1o7FX787J7csP18jG8Ic8OIPLw5jouX/jTP1H/AM38p/ik3+oVq36Nx30fkz4+3f7tq2jqPlp7KH/6Ob/UK1X9Gs8ekMkBz/t//dtWp9anttSQ7rFlBWsZdW5SllLP/wAbtPuDUhoR05Yx7N7NuNw5/Ds0gE7Hi332Gyzspnn2e0DM4ixqDJ4+vXZV9lhqxghzng8W54HbbkDqQs3SuV2f1K8iNyqxhcteudo2osVNZc6nUqVJIYiB7jnh3EfnsFgYfI39Y5PO2Dl7OLxOLuPoQsq8DXyPYBxyPc4HludgOQ5KbVyu22y48Vr/AFpmbeKx+mGDU5ZDZyfs1vIw8DS+LhceZALQRsNyB4KV7OcrkMvBlnWLjsjjIbhZjci9ga61Dwjd3IAOAduA7bnspt4yZW0M8dl3a7bktd6Z1pks5qnMYmaw2Grk6zrODlZsXMYwmJ3z3Afz8CvfT2qclmdGU4JZu61E+9+R5yAN2TMd9ZJt0/NtLvmFdtMtjQncbrMj5KnYHOWHao1ZUt2CaeNfX7kOAAjaYuJ37+a6dm2qr+obmaq5J8ZljkZdqNaRyqSt3YPiCCCmEyqfbaP+PWiN/wC/D/asW7Xc3H4rSXbmeHXOh/WYf7Vi3afH4rWrqJFT1zo6hqeKG1LYu1MhQjkdTtVZ3RmJ5AO525OG7RyPJVjSfea0y1fUeTlnM2NrVxXgZIWxCSSHikkLRycTxbDfpspXXdbLZ3UeL07Qzc2Kq2adie6YI2ukkjDmN4QT9nficNwuuQwQwWocNfxV6anVk7rH2aLWgxztaxwjJJ5hzdttx1WVbHwv/I9/NxWeo7BEmkd/0ypFevR9Y53sREWkEREBERAREQEREBERAREQEREBERAREQEREBERAREQdZQDG4HoQVrWpVtZbOY2hNIBUwbn2J+XOaYOcyEfAN3cfXZbKk5xu+BVE0/bik1BnYhtxukZI39Zo3YT/nNK4eZvSsoJB3BVGxIt9nepW4qw5s2m81be6jJ0dRsvJcYXebHHctPgeSvDVUe1VzHafoUmEG7cylSOo37xkEocSPg0Erjp7arLdqOLU+D1N7HE8VabZ6jJ3dJ3NjPGW+gPL5Ki/Rq2j0fkvP2//dtVh0RYjb2V3KzABPVZegsN8RKHP4t/U7g/NVv6NJJ0fkyf/wBf/u2rp/zU9pfJ9nuXylTL4iXJUYsXlMmchK5sbjO1vE13A3nwg+6PeWTZwGocbqrL5jES4qSHJR14zHaMgczu2kfd5HfdXaT0WNJy5rndVXChv0zqLH6uymocZNiZG5CtXhdFZMgLHRg8wWjmDuvGtpXOYK/k58NLjJqmXk9ps07geGxTkAPcxzQd2u25tIV4f1K8yApmrhrzD9ls2Ixem6IyEE35Kyj8jOTGQ2Tj4t2NHl723PwCkKei8ngqedxWHyMEOLvcT6Mbw4vouf8AnGj9TmS0eBVxK4CbqYU672bY+vZwN/TsNPGXsRYa/vBHt38PDwyRu26kjnv5qRxWiocbrrI6mbOTFcjaW1duUc+3C+X4uaGj8VYV6M8E3UwrtjRtq1Z1NKy7FGzOPrgjhPFHGxobIPiRuB8VJ09HV8ZqejmsQyrQijrSVLVeOLhE7CQWHl4tcPHwJUvEsuNXI0924HvNe6Gb/hh/tWLaOX1fUwWbnx+RY6GJtCTIMnP2XtjP1jR6gcJ+a1Z23u7vXuh3f4Yf7ZisHbYx2TlpVKrDLbgo37UjG8z3IjAI+Z2HyW7MyMpnRNHJX7FnV+b4WXMpCxlWo0cqVXfiawnxed+Jx8+XgpPUtF13Fydy/gsQObZgd5SMPEPkdtvmpPH26+RxdS7Se2StYgZLE5vQtLQQvDISshrTSPOzWMc4n0AXK9tRL6SsOuYhtpw276R7wPIb8h+CmVA6IJ/k3UBGxaC0j1B2U8vbo6jlexERaQREQEREBERAREQEREBERAREQEREBERAREQEREBERB0ncWQveOrWk/uWs7uMGKm05maznsfBYbUsc+U0U7ve4vMiQtcPmtl2mCStKxxIDmEHbr0VPz+notR6efh/bLVEPMZbZrECWNzHBzS0nx3C4eb03pTh9w7Hw6qjaJxjtXZR2u8tNJMe8mhxFQ/m6kAcWcYHi9+xJPkVDw5DU2oYcdpFmckoZCOW3HkMtFG0yyRV3Na0sB5Bz+NhJ8Nitg6XwMemNP0cNDYksspxCMTSABz+ZO525b81x6aY+Tw9HF4jUVmpAIpL0Es0/D0e8RFvFt5kAbrWv0aj/wAT8n/j/wDu2ra2o/8Am9lP8Tm/1CtU/RoG+jsmf/r/APdtW59antteRYsqjMprTE4rJWMfbdNG+uzjfLwgtH1febcjv9keW2/JYb9aY6F5jyEdrHvBbxCwwAMDmlzCSCR73CQPUbdViyqlX+K8ioi1rPEV3XmSOmbLRrMtzxmP3msd0+JHLceG4WXkstBjK8U0zZXunkbDDFE3ifK93RoH4nn4BZwrLK43ULa1hj6XeCeteZ7Oxj7Z7obVA87N7zn47b8t+XNe8WoqM0UcrTJwSXTQaeH+6gkfhuDzTFVKAr0Z4Kvzaxx0M+RhdHZ2x8rYJHhoIfK7h4WNG+5J427ctllN1B3V2lSnxmQimuOc2MOazZpaN3bkO8AN0wifjWVGqpHrjGljJI4rT6/DE6WYMHDAJDszj578/TfYc1K4DU+P1AS2kZC5veB7Xt4SwsdwkEfMEeYIVwNZ9uQ4tc6HH+HH+1YtzDGUxkZcia7DbkiFd0hG5MYJIb8NyVprtu5a80N/24/2rFu953cfit6uozFB09S/kZrGzpuk+Q4XIVX36dd53FSRrwJY2eTDxNcB4c1Laqrm3Sr0i4tZbtRQybdSzficPmGkfNY+ttGzahnqZLH52/h8ljo5RBJW4eGQu2PDICObd2jcKFwNi1rPMUs5btzwxY2vCWUoXbRPnki3e948duLZvlzWLzzVjZ+nmtbSeGjYGVx2+PNSawMIB7FuBtu4rPXs0fWOd7ERFpBERAREQEREBERAREQEREBERAREQEREBERAREQEREHlbDjVmDXcLuB2x8jt1VE1dksritLsnw01ZuRmlrwQyWWF0fFI9rdyB4cyr9KAY3A9CDutZxw3c9lsTipS1tTDSOtW3bc5Xsc5sDR/rH4BcPNOm9LFsaEz+LxOMuYDK1JdSUZJ5rEtxhEF4znila4Dm0bhpbt04QrTofM2tR6TxmVvRRRWrMXFKyHfga4Eggb89uSlm7tdv5KjacuW9DahOlclGPyRkLEsuHug8mucS91Z/kQS4tPiFxzlpbtSctP5T/E5v9QrVP0at26OyX+Pf7tq2Rkc1Qy2M1HUpzd6/HQSQ2CB7rXmInh38SBtutcfRrf3mj8mGt3/ALe//o1bn1qe11yuiMVlclZyNjvu/tM7qUtcBxRmPgLOnTofiAVj2tI1rNezHbtWLctgwcc0gbxcMLg5jQANuu+56ncq0SNcPArGkYf0T+Cxmqpt7s7xV6WzZdNZit2mzMnnY7d0rZNuRB5bN4W7fALOyWDdkaNWCW/MLVSZtiG2xjWua8bgHh24SNiQR4gqceDv0P4Lyc0/olTK4VezottySw6xlLbm3o2R32hjALQYTt4e5yPCduo/Fcz6PJidFBlrMMYvG/E1sTD3UhcXctxzHM8irIWnyKBp8ipmiuO0RWeMgZLs7n35WWHvbGxr2TN4S17XAb8iwHY8uqlKuFJtUbd27PasU3SObI5rW8XG3hO4A22A6KR4Tv0K7gHyP4K5VBx6Ix8UUcMVi0IOGJs8O44bHdndhdy3HrttuAFLYXTNDEZB2QgbILD64rPcXcntDuIEjzHTfyWXGD+iVmRgjlsmajT/AG5f8+dDH/D/AO9Yt3O577ea0j24ub/LnRDT178f7Vi23b1FjKeUnxs1kRTw1Dedx8h3IJDnA+O23P4hb1dRmKvry1qe1msbp7TtylR9urzy2rNiMvfFG0tbvGBy4vf5b8l1OAm01nMXPi77Y8ZMyKhapyR8RkLI3CORrvuu2Gx8+S99IuvajyNjWV6D2avaritjKzvtsrcXF3j/ACc87HbwACz9UUprmMeaz+CzXeyzCT0LmHi2PxAI+axbjhpb8C/jpH0eQpFQ2k5faMQ2wBs2WR72j9Xfl+5TK9mj6xyvYiItIIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg6yfm3fAqjaefGNQZ5vEOJ8jHt8y0btP/qBV4mdwxPd5NJWtshT/ACFNp3NRSPa5lgU7Q35SxWHc9/USFpHzXDzem9K59VUu1MNbpqrJ/wDiWZSkav6Xe983bb5cStvjyWv9OV73aJqFuqclKI8Fi7UjMRRaPz0jCWGzIfHmHcI8Oq46e8tVkdntJtzs4sQQOaLN2S6LD3de+dI9p4vhy+S1TD9H7XOLjLKWepRcXMiGzKwE/ILZmdrZDsyy1nUdAixpi/OJcpT+/TkcQDPH+qeRcFfDIyVrXxuDmOAc1w6EHoVvdZzEw+bLXYx2qtP1Oo2fLIyj+Cj7HZD2yRt9zUh+WVkC+nJOQK1tqvWGdyuds6U0RWhkv1mD27J2T9Rj+LoNvvybc9kmu0w067sk7cNi5mpJP/Nnrx/sW9ufhqOY/wD7q5b9vYXOHSIxlLUdmPLxsBbk5GNcZJBzPE3bbhPTYdAoDSuvMm/Os0prDGMxmcdGX15oXcVe+1vV0Z8D48Kb76Nsag/sX9un/WCf/wA1Kf2L+3T/AKwT/wDmpX0x6J8Fn5b+Ltj5oPZX25H7WopR8cq5ekXZB20ykd5qU7Hzyr1uHWGvLOMysOmNPY0ZXUVmPvRG93DDVj/vkrvAenipTCafzcemZaWU1JYny9gOc69CxrRA89BG3b7I9eqvyVNsabrdinavJyl1Iz55KU/wUhW7Cu0Z7/rtSQfO7Mf4LYGmdZ5/EahraR1rWg9rstP5Py1blDf4erSPuybc9vFbKiVvk1QxGjMV2AaobmMfkL+dozCpYjmLXPke4hrgSBuPRWntxa0toSVt/avYcgJS37Xs3dtL/lvstj5fK1sBhruWtkivThdM/bqQB0Hqeirek9O3Ms6fU+qWRuvZSt3EdIDeOlVdz7r1c7cFx+Sm63/VMelnqmE0axqlprmFhi4enBwjbb5bLGuvZHBK952a1hJPkNlV9HQX9IZuzoqzafdxsdb2zEzyfnI4Q/hdA4+PAS3Y+RUvqlvtNGGkHlntlmKB5HXgJ4nD5hpHzXOznDSzaKG2m6bT1a0tPxB2U4orTjGx0XtaNgZXu2+J3Uqvbo+scr2IiLSCIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIPK0wSVpWEkBzCCQdj0VO1Fpw6m0+7FRX58c/eJ8VqJoc+JzHBzXAHkeYCuNtpdVma1xaSxwDh4cuqomqsxlMHpZlrEirLkZJK8EPtQPdl8j2t3dtz25+C4ebuN6UA7UGr8hTx+ncZboQZ8yWYr2Rmh442MgcG8bYx95/Ezl0G5Vv0TgZtMaWxuHsTx2JqsXBJLG3ha925JIHh1VSs6U1Tp+njMzhzUy+erPsPyEEr+5juichzwx33eFzW8O/gFb9G59+qdM4/MyVfZH24+N0HHx92dyCN/HouN/jT01XjJM3prLYuEMdJbqSwsDzs3ic0gb/NUXCao1DouHC4XWOGggqyCOhBkqljvWCQDZokBHu8W3VbBzOSiw2KuZOdrnRVIXzva3qQ0bnb15LWOXzOS7WamMxuM05k8dipLMF21kL7QxvdMPGBGAfeLuXNagltS6+v1s9Jp3TWnps9lII2y2R3whhrNd9kPefvHyWF2V4LM4XEZWfP0W08nk8pPclY2QSe67bhHEOuw5LHyNy/2d64zmZs4fIZHB54wzGehF3slWZjeEtcwc+EjmCFZNMawxetcU7J4n2gQNmfA4WIjG9r27bgg/FS8QiSd12VA7XcPlr1PA5PAY11/J4nJx2WRseGOMex4xufA8gr+VA6v1Zi9FYxmTzEksdZ8rYGmKIyOL3b7DYc/BZlueFqC0/2kyW81XwmpNPX9N5G5v7ILDmyQ2COZa17eXF6Feuq+0P8h5lmAw+Gu5/NOjEz6tUhohjPR0jzybv4KtZLOjtWzWn6WAxmRjo4zIMyFvJWq7oWsDN9mM4uZc7demSuW+zjtHzedyGLvXMHnoodrlOEzOqyRt24HtHPhPVa2xMpLsxxeZkz+qtR6iwz8Xcyc8TYI5JGyFsLWbcII8N1sMDboq7pHXGE1qy2/DSWHexvbFMJ4HROa4jcDY81Y281m5zysVTtK09lc3iMbNg6bLeSx+TguRMdII+TSeL3j03HJZ+ntcZCbPs0/qbAuwmSnidPVLJxNDZa37Qa4dHDyKyNV6voaGxTcpko7UsDpmQNZWZxvL3HYABQ2Knu9oGs8Tm/yLfxeGwsczmPvs7uW1NI3h2a3qGgb8z4qzmJ7Y2cyOqu0+jcx+nsdj4NOusiB965M4SWe7kHGY2gH3d2kc+q2sNgAPIbLUuP1Nmeyyh+Q8npe/fxlWwRWylR7e6MUknu94Dza4F2xW2i3h6lNRFK17pzUOTv0czprNQ427j4Jmd3LXErLLXcJ4DufdBLRzHmsHDSTazy9LNS256tTHwQytoxkcEs8kXE4vPUhocAB8Ss/XGc1FHkqGn9NVaLrGRrzSS2rchaKsbS1pe1o+0ff5D0UczAX9MZ7FSY3IxtxMzIaNyrLHu97mMcGSMd4E7c/gFFbQwe3sW4/TKkFG6fdxUjsejypJezR9Y5XsREWkEREBERAREQEREBERAREQEREBERAREQEREBERAREQdZdjG7fmNjutZBlrUOVxWIfwiph5XW7jj1lexzmwMH4cR/ZC2bL+bd8CqFp6eF2oM61hHG6Rjh6tHEw/8AqBXDzemtKyj3TuqPoy/Lo/MSaIy0LooZZpp8Nb/udiJzi8xb+D2bnl4hXjoqh2qmOLTVO6OVunk6ctVw6iQytbsPiCQuOn8bR3aJqOTUT7XZ/pyN9rK3GCK7YYPqsfC77Tnu/SLejfVXOjj4sVj62Pg37mrCyFm/k0AD+ZVrsnqQM0kci3Z1vI27Fi3J958neuGx+AACtzzyVv4MaRzmcwSFp/B5aPst1Zl8DqLjq4jMX338ZknD6jjk+3E933Tv03W4JBuFFZrFUc5jZ8Zkq0dqpYaWSRSN3BB/j6qS/q4cyvYxjpS9oja3iL9/dDfPfyWrMxna/apq3DYXBcVrD4W63IZHINB7kvZvwRMd9479dlTq1vJZHF0ezOXIzGr/ACjmxUtkPPHJTiaJBHxfA7fJb5x+Oo4elDRxtSKpUhaGxxRNDWtH/wDvFXG1O3s7ruuQ47bAkLgoFzaawlvDst7RMvk8yyRmnNSGOUX2tLmVbLRwlsm3RpHito154bNZlqvNHLBI3jZKxwLXN8wfJeNmtDervrWoY54JAWvjkaHNcPIgrQt23c0v/KTs3oWpYsbYy1OvVkDveq17JJkjB8By2HxXSTcz0v2SzFftW1Ni8HhOKxhsNdbeyWRa36l8kf2IWO+8eLmSPJbXi3B6nmorDYejp+hBjcZWjrVK7QyOJg2AA/j6qVj5lZtVg6rwX8pdMZLEtk7qWzCWxyH7kg5tPyICjNFa2fmq1jH5us/F53Fxj2+tNyG2355h6OjOxO/grS0LVnbS11S3SuVSY7E+Mv1Z3N6mvwtJ3+B/nVnPCJ/SdufVectaukrugxzoPYsUx/2pIuLifMR4B5A2HkPVSupactvFv9lcG2oHsswkjlxMPFsfiAR81L14YK1SCGqGiCOJjIw3oGgADb5bLHtSMhjkkedmtaSfgAs28qmNJyGbEifoJZHvaPJu/L9ymVCaNeH6eqnoQCCPIgqbXt0dRyvYiItIIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg6TO4Ynu8mk/uWt7mOZhX6fzFZ7mFkwqWhvyljsO3JPqJC1w+JWx7LBJXlY4EhzCDt8FTM/p1+f0+/F178mOlJjfDZYwPdE5jg5p2PI8wFw83pvSnOYO3VUHFxXu0vUMWYtFkGmMPcf7BXH271iMlvfP/AFGnfhHjtuvGTVmrblHH4PEx4x2pXy2YblmyHCvE2AhrpA1vPd/EzYeG58lbdD4azp7SWMxNx8L7VWLhmfDvwOeSSSN+e25XGcNdqtYksdlOXmldF3+ksrb7x0gPv4ueQ8yR4xOdz38CVfHnly5gqM1zjJM1o7NYyGETzWqckccZ5cT9vd/fsqppLXN6n+SdPatwV3C3pYWV69mZ7ZIbUjWgEcTejjtvsVexd5OioGtO0N2JyR03p3Gy5nUssfGyuzlFVB6STO6Nb47dSpHV3aVjtLZSLER0MlmMrIzvTSx0PePZH+k7waD6qA7IKlqWnqDO5XG2qOSy+Vmlc23HwyiEbCNp9AEk90Qc/Y/kKGjKgoZCOTVdK+cyLbuTJrTvtsP6pHu/JWPR/aLW1Nbkw9+hYw2oKzOKxj7A2JHi+M/fb6q5vG+61r2wwvxkmmtVUadme9iskwP9liL5H13giRuw6jZTO7ir02CVy1VPTXadgNU5Q4uA3KWQ2L21L9d0Ej2+bQftfJZWqu0DA6Nngq5CWxPfsDiipU4TNO8efCOg9SptucLmPPWuvKWkXVqbK1jJZi7uKeNqt4pZfU/ot8yVXKXZRdzWlczNnbccGp81ZZkDNFzZTlj5wsb5hvQ/Ert2aOk1HrTVerreNv1HyPhqURegMckdcM3IAPTc9dlsxqtu3iM9qhovtAuXcszS2q8c/FahbGXNPWC8G9XxO8fMt8FsJnLktb9rOPuyYrDZbFY+zeyOKysFmOOs3eXu+YkA9CFP6R19V1LflxVjGZHDZWOPvhSvxhr5I9/tMI5OA8duiWZ5i5WjIZCtiMbZyNyQR1qsTppX+TQNyqlpnDW9Xy2NUalrCJuQpuqUscefs1R/M8f+EfyJ8hsFDas1HltdVchpvTOn579EWGVrWTfM2KEFsjTI1gPN+wBB2W0tg1oDQA0DYAeSXiIo2j5cpp3KzaMys4uR1awsY27ts+asHcPA/wDXYdhv4ghSmp43WqUVNryz2uxHA8jrwE7u/FoI+awtc4TUU2QoZzTV6hXt4+Cdj4rcReLDXcJ4AQfd34OvhuozGZCzrbM08oy1LTx2Phhm9jYB9dPLGXHjPXZgcAAPHdT+q2hp+NkdFwYAGmRx2Ck1H4If2iP2ipBezR9Y5XsREWkEREBERAREQEREBERAREQEREBERAREQEREBERAREQeVsF1WZocWkscAR1HLqqLqjL5HD6TbcxTa0+RcYIoG2iRG973tb7xHPx8FfZPsO3G42K1l7HczWUxmJdK1tPETOt23H7UzmvIgYPT7x/ZC4eb03pRn8mtU6Zq47O0YIM3nIZLMmSqsf3TbLZ3BzhE49Cwtbtv1AKvGls4zU2nqGXZWfVFuPvDDIQXRncgtJHLwUgw8J38lStC3JNMZOfROUY6J7ZZrGKnI9y3Xc4v4Qf02cRBHlzXGctLflchBicbav2i5sFWJ0shaNyGtG52C1XqHVdbtNOHw+maWQmAvwXp7s1Z0UdWKM8RIc7q49AB5qe7TtRNydWxobBh1zO5OMQyNjG7KULvtSSO6N93fYdSrfRptxmMq4+Mkx1YWQt9Q1oG/wC5WccjWFrUFTs97RdQ3dRslrY/OiCWrkhE58beBnC6FxAPDseY+KueD1HiNUY/8oYW9Feql5j72PfbiHUc/ipmw1krCyRjJGnq17QR+BWpdG5StoHVua0dm3sosv35MhiZ5PdisMl2Low7oHA+CdjZj+pUTns9i9OUxdy9+CjWLwzvZncLeI9Bv8lKye4Tv4LU+uctR7RNU4PRuHdHkIqV5mQy07NnxQRx77Rk9C4k7bLOmZq1i6r1LiO0DVWlKGlbDMjfoZFlua9WaSyrXaPfDn/rdNl7TZzGaI7X89e1M8U4MvBB+TcjK0mNrGN2fFxfdO/NbNrUKVBjo6VKtUjJ3LIImsBPwASzQqXojFcqwWojzMc0Ye0/Iq7vRh4YTVGG1LFJJhsrWyMcJDZHQP4gwkdCpMFalxF2n2ZdpmYoZOOLHYbUbo7NCyGhkDJmt4XREjk0+S2xG8P4SNiHcwR4rOqckY+a1BitL445LM3GU6ge2PvHgkcR6DkCqpjM/W7Qe0LC38FHPJjMHDYNjIuicxkjpG8LYmFwBd+kfDksDWGTg1tqnC6Pw8jbgo348hlZY/ejrRxcwxx6cTnctltdnDsA1jWjyaNgFqcQ7au0zrmDs4oN0xqXFZSvPVsvZFbhrGSCyySUlsnGOQJ4hvutuk+7yVf1rhZtR6RyeKrODbM0W8BPTvGkObv8wF5aM1xT1ZRka6N9LKUQGZClO3gkrybcyQfunY7Hol/UYWuM/m6V2jhMBio7t/JxTETSziOOq1vCDI4bbu24hyCwamAvaTy+LGPt134uxHDSuRSsPeOkjjIbIw9BvtzB8l7abvS6w1PZ1RHC+PD1a7qGNkeNjaJfvLMB+hu1rQfHYlSuqK09rFuNRwbaryMswk9C5h4tj6Ebj5qdcC4YB3FSd6PKklD6Tm9pxDbA5CaRzwPIb8lML2aPrHO9iIi0giIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiDrJ9h3wKomBsQjUGWaHDisbSRn9JrHFjtvgf51ep393BI8kDhaTufDktdZqnHjaWCy8PuyY+zE3iaftxTODJGnzB4g74tC4eb03pW5qp3asG19O0sow8NvHZOpNWcOvEZWsLR+01xBCuPV2w89lQK0OQ7SdRx3Z+7r6Uwt5xrs6vyNmIkcZ8o2u32HiQuOn9arK7JKcI0s/MHaS9l7U9q3MebnO7xwDSfJoAACuEioUdqbstzT6NqIyaVytwyV7jf/y+eQ7mOQfoOdzB8N1fJPFWkY8nioLVGmcTqzEy4vMU47NeUEAuHvRO8HNPVrh5hTjz1VH1t2iV9O22YbF0581qKwzigx1Yblu/R8jujGepWZnPCtWM1FnMrp+l2dPyUzb785LhJ8iD9Y6pE3jJ3/SLSG7rcOntNYjSuNjx2Gow067BzDG+88/pOPVx9StfzdleaxWkaORpTQ2dYU8k7NybnaOeZ/5yEHy4eQPorbo7tBxmsjNWjinx+Wqge1Y203gmhPmB95u/iFrV1wkWTZcoeS4HNc22NmMPjs/j5MdlaUF2pKNnxStDgfUeR9QtLSaiy2kcdn+z6pdmMsWRq0cXce7eSvXsnpv5tAIHxW0tX66xGjIYRedNYu2d21KNZnHPYd5NaPD1PJUqp2X5nUWnc5lMu6OhqfMW4shWZvu2m6H8zGT8OR+K6aeO2K2dpbS+K0hiYsXiarIIYx7zgPfmd4ve7q5x67lT8aomiu0NmdunAZmhNh9SQR8U1Oce7MB1kid0e3x5dFe2clm59rGQxas7ZBJib1fKY/6i1fxtyhZkZyL4uFpDj+zudj4brZ1m5Bj6c9y1I2KvXjdLJI7o1oG5Ko2IxdntEt29RZyo+rirNKSjjKT/AM53En253+Tn7DYeACs45SrrUqQ46hWpVmNZXrxMija0cg1oAH7lj23Njike8gNawuPw2Va0Vks1QyNjR2oSye3Qrtmp3mchdq78Ic4eD2kAO/FSmqS59KKm1xabliOu4jrwE7u/FoI+axZyqz6IP/Fys3oW8TSPIgqdUVpxjI6DgwBoMrnbDzKlV7tH1jlexERaQREQEREBERAREQEREBERAREQEREBERAREQEREBERB0naHQvDgCC0gg/BVPOYGvqXBzYizLPBBM1o7ys/gkj2IILT4EEBWuy0PrytPQsI/cqJqa/foaQEmLtMq35XV4K8z2CQMc97W7lp68ieS4eb03pVxuY1ZJWqaVxWQq/luKzZgnylyLjAgh4SHlg6vcJGD47lXDReDn03pfH4m1Yjsz1mESzRtLWyPLi4uAPTclVi5orP4Cjj8lgLkGVz9Oaea0bh7pmQE23eDcfY5taW+XDsrPovPS6o0xj8xPVbUltRlz4Gv4xG4OII38eYXG/xqPPX2EfqLRuZxUMPfTWaj2xM3A3k23bzPTmAq1p7XtilJisBqvB38LkJ42wQWJ3NkhtStaNwHtPJx232KvOXyUGGxdvJWuPuKkLppOAbnhaNzsPNam1Jqb+yo7DYjTuHywhbfgvz5C3WMMdeOM8W7SftOd0GysgtOqe0XFaayUeKNXI5TJSM732PHQGaRjP0neDR8VXeyTHWnN1DqbJ0LVTJZfJyu4bcZZK2u3YRt2PQbLraz1bs57RNQ5HUENiDGZ1sElXJMhdIyMsZwuheWglvPmPBXLB6oxGraH5Rwl9l6rxmPvWAgcQ6jn8U6gy38zzWsu16IYK7pvWNCpO+/j77YZzViL3y1Xg8bXAcyBtyWznhRWcz2L05VF3L34KFYvEYlmdwt4j0G/yWZcVagdN9pum9VXnY6lZsQXwOP2S5A6CVzfMB3X5LJ1Pr7T+kHQw5S48WrHOGrBE6WaQeYY3nt6qjar1Fhdeau0pU0rYjyeTo5Ftqe9WaSytXAPGHP2+902XrJmMZovthzuR1ORUhyleAYzIzMJiYxo2fFxfdO/Na2wy9+zcDVeutTavtVLbDG+KnjfbIHRuig4dzwtd0JPVbSBUbhdT4bU0csuHytXIshcGSOgfxBpPgVJNWNV5IpHazStQ0sHqHF0LNzKYnJwyMbVZxSmF24kb8CFY9Ja+o6qyE2NfRyOJyUbO+9iyEPdyOj324m+Dh8FlZvUOK0vjjkszcbTqB7Y+8c0kcR6DkN1U8Tna/aF2h4jIYOOd+Lwlex3+RfE6Nsr5WhrYmbgF232itTmFe+r9SZDWtHIac0zgLeQqOnZVtZLvGxwN4Xt7xrdzu/YAg7LZuzWMDI2hrGgNaB4ALUem9bf2NsdDpfUWCy7Jatl0MV6vX7yvYZJKeB/HvsCeIb7rbnTkeoS/iRSNcYXU0uVp57TFzHQWqVWaKSK5E54sMcWu4AR9nm3r4brHwtiXWWUqZmSzPXpUYYZo6TCOGSeWPiLnnqQ0O2A89yszW2X1C7J1NO6bq0zZv1pZZrlmQtFSMFrS8NA94+9yCj5cFb0zmsRJjsmYsZIIaNqm+IOMzmRuax4d908hv58lFbRwWxo8v0ypFRenSPYXbf3wqUXs0fWOV7ERFpBERAREQEREBERAREQEREBERAREQEREBERAREQEREHEnJjj6LWkWOmzOfqU5p3Nx+DldZMQ/u8rnO7oOPkxu5289vJbKk+wfgte4TKRtz87HgxjKNfLWLuXH3Ti0gevDs74Lh5m9K1DkfgqRpuzY0RnXaVyER/J1+xLPh7jT7p4iXuru8nAlxb5hXXqqj2qTMg01VkH/ACtuUpGp+l3vfN22+XF8t1x0/jVRevtQS6vN3QGm4ZbF2cNhyV0D6jHwu+0HO8XlvINHmrxWqR0KVelDv3NaJsTAfJoAH8yq3ZGyA6MbYjH9s2rlmW24/adN3rgd/UbAK3vVv4MeUB7C17WvaerXDcFah0zlK3ZlqnM6a1AfYaGUvvv4q88bQSd5txRF3RrgfArbzyojPYbH6jxc+LytSK1UsNLXxyN3+Y8iPNSX9V7SPaxpcXDbbffflt5rU+sstQ7TtTYXSmFLMhTx95t/LWmDigibHvtFxdHOcfBVSPI5S9gqfZvJkp9jqKXCy3Q7330428fDxeZB4fkt24bB4zTuOix2JpQ06sQ2bHE3b5nzPqVb/nk7etPG0cc1zKNKtVY47lsETWA/gF7WK1a7AYbVaCxEerJow9v4FdguQdlzVquleqdlfaLmIcrEyhgNRvjsU7jWcMEE4bwuidtybv4LbEcjJGNfHIyRjhxNc07hw8wfJYmQo1MpTlp36sNutK0tfFKwOa4fArRVjIZDSlbUXZ3QuzNqvylOnSnLyX1a9kkvYD6AED4rcm5npe9QZeDtG1RidMYR3tlHGXmXsrcYN4Y+75thDujnF3UDotrRBrdg1rWt8mjYD5KHwODx2nMbBi8VVjrVK7Q1jGDb5nzJ8SVMxKW+lR2s8DJqfSmQxMEgiszMDoHu6NlaQ5hPpxAKO0r2gQ5indhzFaTEZfExh+SqWOXdgDfvGn70Z2JBCtbVqjtjiZHmK80Q2fLiLLLxb1NQSxb8XoN3fiVZzwizaQfe1DkLWr71c1YrkDa+NrP+2yqCXcb/ACc8kHbwACkdR4s5bGywNlfDMwtmhlZ1ZIw8TT+I/AlTf1Xdt7gtMXCODh6cO3Lb02UdlrTKVGxZkIDYoy4n+YfisW8qndHP77CMnI2Mz3yEeW5U2oLRbXxYCKGQbPic5jh8Cp1e7R1HK9iIi0giIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiDzsEtgkIBJDTyHU8lr3VTIcfgMdkXhscmNt1p2vcduAF4Y8E+ALXuBWwrDgyCRx32DSeXwVXsUKOcxr6eQrR3Kdlm0kMrd2yNPPYhcPNcYb0JBv1p9wgg9COY2VD0virGuMyzWWasvfRqWZW4bHNG0cYa4s79/6TzsdvIKHrULOXkqaHo5q/jsVUt3h7RTl4Z3xQlnBC153IDTLsfRuy2LpnBQ6YwVLDVpZpoacfdskmO73DcndxHU81y6aUzPtudmGUs6ix7RPpq/YbJlKe3vU5HENNiP9Unbib81fS9sjGvY4Oa4BwcOhB6FYeqcQ7P6ayuIY5jX3askDXP+y0uGwJVIxuo9TaGfh8RrCpj5sdYMdCDJ0Hu2jl22Y2VrunFt1HinYvj+i17rDtDuVsvJpbSWKdmNQ8AdISeGvQDujpXfv4eqy9TdoGRq5+TT2mNOT5/JVo2zWtpmww1mu+yHPP3j5BYPZVg8tisXl7moKAp5fK5Oa3M3vBIeA7cA4h1AHIJJjmr/ABCWOx6eHRFelSybTqWrdOXZkHj3ZLhO7t/1CPd+SltI9on5YyZ07nsXNhNRxR8bqsvOOw0dXxP+8PHZXdy172uY3IPiwGdwuLnv5TEZKOVra4HeGEgiRvwIUlzxRfCgCp2nu0qpls1Hhcricnp/JWAXV4MhGGiwB1DHjkSPJe+rO0OlpnJw4atRv5rMzM71tChHxPaz9J5PJo+Kztq5hrPXsGlrNbF1KNjL5240mtjq32iP03n7rPUqCodk9nK6WzBz91jNR5uwy/JZg5tqTM5xNb5hvT13K9uzWllMjqfVOqc7hLeLs3pIoKkdsAvZXa37II8N+q2I1at28RO1N0jrnKNzMGldY478nZp7Ca9mN3FWyAb1MZ8HePCVsVnJa/7UsFlsxh8XY0/TZay2NycNyFrpBHyaTxDiPQEclIaX1xkrWbGB1RgXYPJzQusVuGcTQ2WN+1wvH3h4gpjPMFoz+ar6bwN7MWg50VSIyFjerz4NHqTsPmoHS2l7ltlzN6rEdjK5iuIZawH1VSsRuK7fPr7x8T8FAWrGpu1OJ7MZFjaGlm3GbT2uJ090Qygucxo5NaS0gb9VtBzwSSPFLxMIoujad3SubuaRmuzXsdHVbcxkk3OSGLi4HQuP3g08Ox8ipLUk0Uk2LoSPZ/bN1h7skbvDAXnYeI3aFia60bHnXMzEWUyWNyGOryezzVJuBu/2vfH3m7tHI8lgaSlramyU2fvVo35KCGvFCXD/AJO18DXuLR4cRedz47LP9VtDAAiiSfF5KklHYD/kG3k8qRXt0fWOV7ERFpBERAREQEREBERAREQEREBERAREQEREBERAREQEREHWUbxuA6kFa11mY8no2LHiaWJ+Rs16bXQvLJNzKOLhI5ggB34LZcnJjj6Fa5x+Khv6nltzNL24lzxVaT7rJJSXOft58OwB8Nz5rh5vTel0t9ntWHB0cZgLtjDWsZI6WldZ9bI17t+Mv4vth+/vb9VIdn2ZuZ3SGPu5Cdk94h8diRrAwOkY9zT7o6fZ6KdB/FUllefQGqGOjeH6d1Bc2dGetG4/oR+pIRzHg4+q4TlpaNSZduAwGSyz2CQUqz5+Au24uEb7b+G61tbdq7tQjxFa9pyPAYNs8ORnsSWmyyThuzmMY0dNztuSs/UFjK9qF23p3Fxtq6Yr2PZ8lknu9+0WEF8MI8txsXLYIiZDE2KNoYxjQ1rR0aByAWs4GsMk3OaA1pmM5Xwd3OYbO91LN7AA6erMxvD9g/aaR5dFYtI6woa2xL8lj4Lddkc76z4rTAyRr2bBwI3PmrPISOm4K0/XyT+yLU2Xr5mCf+S+YuG9WycbC9lSV+3HHLt9kb8weinY2e7mVBau1ZitGYxmSzMskVZ8rYQ6OMyEvO+w2HPwUvNdqspG+bMIqCPvTPxjg4Nt+Lfptt4rV1/Nx9r2pcPj8JFLLp7D3G37mScwtinkZvwRR7/a58yVJM9rXTL6gi7Vs1p2lp2hkBWxeQZftZSxWdCyFrAfcZxcy53Tku97Iydm3aVnM7lsdes4fORQ91fqQmY1nMGxjeBzA8VtAnc/vXB5jbwTd6MITSWucJrlluXCTTyNpvEcwmhdEWuI3A2d6KxALVV7Iy9lGvctmL1aaXTOoe7lltwsL/YrDRseMDnwkeK2dRyFPIY+PJVbcE1ORnesnY8FhZ57+Sap7hKwtV6so6KxLMpfgtWI3zx12RVWccj3vOzQBuN1C4huX1zrLHZ+5hbmFw+HhnbXZeAbPallbwk8I+y0N8+pUNNlR2t6ixdPEQyu05hbou28k9pbHamj34Iot/tAHmT05LbEZPidyr0nbWNPK6r7LKEGGtYCHJ4KvbbDXykVoMLIZZdmh8ZG/EC7bl1W2HN4Nx5KI1PgIdUadvYaaQwi1HwtlbzMbwd2uHwIBVXxOvr2IrZTHayrNr5XDVPanSwHePIQD3RJH6l2wLfAlLzyPXVsGV1JqqtputmJMfijQdZvsgiaZJ2mQMEfGebARxbkeG6753C4vHagw2ejhfXnZKyi4xyFsboyxzWBzeh2OwBPTdZWjcTkYG2s7nHtOXywY+SJn2akQHuQN8+Hc7nxJKks1RgymOnp2GhzJG7jf7rhza4eoIB+Szbyq0adcXUCT/fHKUUJo575MBXkkO738T3HzJO6m17dH1jlexERaQREQEREBERAREQEREBERAREQEREBERAREQEREBERB1kALCD02WvaNmTE5yKKywhuZD3RvHNrZWEkMJ8zHzH7JV/nce6fsdjwla91dYlo6bhvtrWLcmOs17PBXjL5HBrwHcLR190u5Lh5vTelaB6qmdqdtk+LxuBryNOSymSqsrRA+8AyUPc/bwDWtJ3VjZqPDzYeHNflCvFjZ2B8c80gjaQeg57bHw281UuzDT1W3Cdc3/7czeYMkrbEjuIV4C4hkUY6NHCBvt1XDTxzWqzeyVzY9GNpE7WaNyzXstP2hKJXE7/ABBB+atriqLrXHWdHW7GvMLI9gj4XZih/c7kI5GQDwkaOe/iBzV1ZZitQsnhcHRSND2OHiCNwVb+kdJVg3K0F6vLUtQsngmaY5Injdr2nkQQs2R23Va31HrDPZzNXdMaHpwvt0wGXsradtBSc4fZaOr3gc9vBSTKtX03WL1XH9nU1iV2DGqbFAu4jvJWib3jYd/Lc7LftapWowR16kEdeCJoayKNoa1g8gAqPc7JoI9DVcFj78kOUpWPyjBk3jd5ub7ukcPJ3QjyXrpTXmQlzLNL6vxgxeeMZfC+N3FXvtHV0bvPxLVrV/rpIuxPJPFcFcbndc2x8TJmuZKxr2OGzmuG4cPIg9VoLMzyaeuam0Fj5nw4W3l6EY4TsKsVg7yxg+AO371s/WGvJsNk6+n8FjH5jUFmPvWVmu4Y4GdO8ld91v8AOsDG9lEVzS+VpagumzmM3MLdy9CNu6mH5vu/Rnh5ren/AD2zeWxsfSr42rFUpwMr14GiOKJg2axo6ABSDCtZ4DWGe03nKGlNawwyS2wY8fmKx+quOaPsvafsSbfIrZUZ3G/RSzAyBudgFqztbBu5tgqwmeXE4qS5cawbnujPE4NPxEbyB6K760z02mtL28lVjE1scMVaN3R8z3BjAfTcj8E0lpdum6EotzuyGUukS5C7NzdYk22228GDoG9AEnHJUnVv1crThv0pmTVrDBLFIw7hzTzBBUZqC4aOPlla0ukftDG0dXPeeFo/Equ4SjjNC60uYWraipYvKVxdrVJZQGRTh/C9sYJ6O3aeEeO6z89moXalxGDjjllsiQ3JeBhLIY2seGl7ujd3bbDx2Us5F90nCa2GjgJDu7c5oI8t+SmFEacJGP5nq8lS4O69uj6xyvYiItIIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAuriuxXUhBjyu5KsWMg3G3DWme1pPvMO/UK0vZuFT81gYsq9xnZxEnffyXLy6cxrTcISXQWAyc1X25jbtGrJZnjoWGh0IkmcCXbePD7wAP6RVqxtOniqMFGhDHWqwNDIooxs1jfIeiqj9L5Cqf7RydiMDo2T32/v5rzP8rap5NpWmj1dGf4rz3TqbzFo1Jixn9P5HEOm7pt6u+uZAN+EOG2+3iqHQk1V2cWMRRzWRgz2BsyMoMssr91PTfttHxAbhzDttv4KU/L2ooT9fgpXAdTDM138+y6S6zssHDNh8ozz+pDh+4qTM9Kxs9rTUVjUtnTukMLUvT0GNfdt3pjHBC5w3bGNubnbc/RdOzLTOW0vhcgM4ys3JZDJT3ZvZ38bTxkbczz5Dkslmt6cW5kr3IS7meKq8E/HYLo7X+Jcdjac39qJ4/gmeMYMLG93PZa/7W8VlrlXA5LA4x9/JYnJx2WMjcGuMex4xufA8gps67wZOxyUI+O4XDtZ4J5/+a1f89SWy5ETge0o5DNw4PO4K9p3J2QXVo7RDo7G3UMeOW/ovbVfaLWwGUiwePxl7N5uRne+x0wPqmfpPceTQu9/NaTyb6r71jH2H1JRPXc9w3ikHRzT4FdIMrpavkreUgsUI7lzhFicPHHKGjYbn0TM/F5RvZtjc1JqDVGos9hpcXZyc8Qgjme17mwtZtwgjw3WxGKtjV+G8MnWPweuf5aYlvS9G74blS3PJhj9pOmcpqXD0G4VtY5GjkILsJsPLWDgJJ5jnz6LM03q/Pt1AMBq/FU6NmeB9mpboyOkgmaz7bTuN2uA5+q4brfHke5JI8/qxOP8ABdna1haAY69yR36tZ+/8ysvGMIi6OO1F2lmvmMhlnYnBMuMs08XHXBfMyKTdr5Xu5guLd9h0C2a+UHckgbqiu1ZflA9nw+SeT5xhv85Xm/Kaqs8ocO2IH70038AFbm+jhKau0dp/VkZ/K1KvNYZE6KCy4bvr78+Jh8CDsfkutcRYqaQiw63at901737AvLGBg/mJ+JKjjh9TZDYWb0VZp6iCPn+JUhjNINpyiWWSaxL+nK4kj4KzRqvaZi+YhjoKkcbvtAbu+JUsxR2JjcKsfHzcOW6kmjZeydOTlERUEREBERAREQEREBERAREQEREBERAREQEREBERATZEQdXDkVETFkMZkkIa0dSfBTDhyUdNGH8EZG+7gSPQLOqZWMCKRshjdI0MZLxcDjy6Hl+IWT7Gxw5bLJkgZMwsexrm+RC6UWcNZjPFm7SPJYwrHOPb5BeMtCGIBz9huQ0cupUhb3FaQg7EjYbea8oqDWcMj3ySPaOXGd9irtMo004JXvjaGucw7OG3RebsRB4wsP8AkqSmx4fL30b3xSEbFzfEeq6UxI6J4keXva8gkptMot2Cpu+1VhPxYF5O07jz1pVz/wB2FPmNYd9sgZG2J5Y97wNwN+Sm0yh5NOYocPHSqjiOw3jHMriPTuKLnMFKqXN6gRjkpaLGETNmmmfM5v2d+Qb8l6T47vJO+ikdDKRsXN8R6hNplFt07QYeVKAfCML2jwlVv2a8Q+DQs6kybvJoppONzCNjttuFliPbwTaZRzMZE0co2j4BcmjF3jYyBxuBIG3XZZdtsgja2N5Y97wNx5L0rUBDKZXSPlkI24neA9FcGWJXx8UjBIzbhPovUUGDwC9LVMRMMkLpGe8CWtPLrzWWG8vim0yjLLIqkZe8tHLkPElIiDM2KRnC5zQW7Dl05rLdA2e3u5jXd23bcjoSV3fERwkDfhdumDLLps2hA9VkLzgGzF6LpGRERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAXj3fMnZey42QeXAuj4uBwe3ludneqydlwW7qYGM2DvHcb+ex90eAXqWL0DdgudkwPDu/ReMlT3jJGeF56+RWbsuNkwMItd3e4b7x5bLqyl7/ePPE/w8h8FncAXPCmBi9x6IIPRZXCmyYGG+mHPEjd2vA23HiuQ08J4m+8P3rM2XHAN90wMRlb3uN/Nw6eQXsI17bJsmB5GMEbEbheHcmLcN34SOQ8iszZcFoKYHiyAMbsPn6rnu+a9tk2TA4YNmgLlEVBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERB//2Q==",pr:55},
+  {n:"Maison Asrar Regent",h:"Maison Asrar",v:"100ml",c:"oriental",f:"protetor do Sospiro Vibrato",o:["fresh","safe"],p:"Bergamota · toranja · gengibre · flor de laranjeira · almíscar",img:"https://fimgs.net/mdimg/perfume/375x500.132431.jpg",pr:45},
+  {n:"Nuancielo Real King",h:"Nuancielo",v:"100ml",c:"inspired",f:"substituto do Creed Aventus — original não comprado por escolha",o:["sig","fresh","safe"],p:"Bergamota · groselha preta · maçã · abacaxi · bétula · musgo de carvalho · ambroxan",img:"https://fimgs.net/mdimg/perfume/375x500.110332.jpg",pr:37},
+  {n:"Nuancielo Ner Tamid",h:"Nuancielo",v:"100ml",c:"inspired",f:"protetor do MFK Grand Soir",o:["night","formal"],p:"Laranja · ládano · benzoin · âmbar · baunilha",img:"https://fimgs.net/mdimg/perfume/375x500.128392.jpg",pr:37},
+  {n:"LAB 8 Strategy",h:"LAB 8",v:"100ml",c:"inspired",f:"substituto do Mind Games Queening — original dispensado por preço; tem decant",o:["night","formal"],p:"Maçã · flor de algodão · rum · íris · baunilha · coco",img:"https://fimgs.net/mdimg/perfume/375x500.135102.jpg",pr:30},
+  {n:"LAB 8 Effervescent",h:"LAB 8",v:"100ml",c:"inspired",f:"protetor do Sospiro Vibrato",o:["sig","fresh"],p:"Toranja · bergamota · jasmim · magnólia · gengibre · talco · íris · cedro",img:"https://fimgs.net/mdimg/perfume/375x500.135100.jpg",pr:30},
+];
+
+const cLbl={niche:"Niche",designer:"Designer",oriental:"Oriente Médio",inspired:"Inspirado"};
+const cCls={niche:"tag-niche",designer:"tag-designer",oriental:"tag-oriental",inspired:"tag-inspired"};
+const oLbl={sig:"Assinatura",fresh:"Fresco",night:"Noite",formal:"Formal",loud:"Impactante",safe:"Trabalho"};
+const oCls={sig:"tag-sig",fresh:"tag-fresh",night:"tag-night",formal:"tag-formal",loud:"tag-loud",safe:"tag-safe"};
+
+// busca sem acentos: "matiere" encontra "Matière"
+const nrm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+
+// contadores automáticos — sempre em sincronia com a lista acima
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const k=el.dataset.count;
+  el.textContent=k==='all'?perfumes.length:perfumes.filter(p=>p.c===k).length;
+});
+
+// investimento automático — soma dos preços (pr, em €) de cada frasco
+(function(){
+  const inv=perfumes.reduce((s,p)=>s+(p.pr||0),0);
+  const el=document.getElementById('hm-invest');
+  if(el)el.textContent='~€'+(inv/1000).toFixed(1).replace('.',',')+'k';
+  const sub=document.getElementById('hm-invest-sub');
+  if(sub)sub.textContent='€'+Math.round(inv).toLocaleString('pt-BR')+' · recibos + estimativas';
+})();
+
+// ordenação da tabela — padrão: categoria, depois nome A→Z
+const catOrder={niche:0,designer:1,oriental:2,inspired:3};
+let sortKey='cat', sortDir=1;
+function setSort(k){
+  if(sortKey===k){sortDir*=-1;}else{sortKey=k;sortDir=1;}
+  filter();
+}
+function sortRows(arr){
+  const dir=sortDir;
+  return arr.slice().sort((a,b)=>{
+    if(sortKey==='cat'){
+      const d=catOrder[a.c]-catOrder[b.c]; if(d)return d;
+      return nrm(a.n).localeCompare(nrm(b.n));
+    }
+    if(sortKey==='v'){return (parseInt(a.v)-parseInt(b.v))*dir;}
+    if(sortKey==='c'){
+      const d=(catOrder[a.c]-catOrder[b.c])*dir; if(d)return d;
+      return nrm(a.n).localeCompare(nrm(b.n));
+    }
+    return nrm(a[sortKey]).localeCompare(nrm(b[sortKey]))*dir;
+  });
+}
+function updateSortInd(){
+  document.querySelectorAll('.sort-ind').forEach(el=>{
+    el.textContent = el.dataset.k===sortKey ? (sortDir>0?'▲':'▼') : '';
+  });
+}
+function filter(){
+  const q=nrm(document.getElementById('si').value);
+  const c=document.getElementById('cf').value;
+  const o=document.getElementById('of').value;
+  const r=sortRows(perfumes.filter(p=>(!q||nrm(p.n).includes(q)||nrm(p.h).includes(q))&&(!c||p.c===c)&&(!o||p.o.includes(o))));
+  document.getElementById('rct2').textContent=r.length+' frasco'+(r.length!==1?'s':'');
+  updateSortInd();
+  document.getElementById('tbody').innerHTML=r.map(p=>`
+    <tr onclick="openCard(${perfumes.indexOf(p)})">
+      <td><div class="td-name">${p.n}</div></td>
+      <td><div class="td-house">${p.h}</div></td>
+      <td><div class="td-size">${p.v}</div></td>
+      <td><div class="tags-wrap"><span class="tag ${cCls[p.c]}">${cLbl[p.c]}</span></div></td>
+      <td><div class="tags-wrap">${p.o.filter(x=>oLbl[x]).map(x=>`<span class="tag ${oCls[x]}">${oLbl[x]}</span>`).join('')}</div></td>
+    </tr>`).join('');
+}
+
+// TOP 20
+const top20=[
+  {n:"Nishane Hacivat",p:"Ananás · bergamota · cedro · musgo de carvalho",w:"O mais versátil da coleção. Funciona o ano todo, em qualquer contexto. ADN único e insubstituível — a primeira escolha em qualquer dúvida."},
+  {n:"Amouage Jubilation 40 Man Extrait",p:"Amora · groselha · incenso · rosa · mirra · oud",w:"O troféu da coleção. Extrait a 40% envelhecido por dez semanas — frutas escuras, incenso e mirra com fixação de mais de 24 horas."},
+  {n:"Amouage Decision",p:"Cardamomo · bergamota · pimenta rosa · olíbano · mirra · zimbro · cedro",w:"O frasco mais caro da coleção. Quentin Bisch construiu um incenso frio e mineral — olíbano com zimbro, sem doçura nenhuma. Fechou o único registro de incenso que faltava."},
+  {n:"MFK Grand Soir",p:"Âmbar · benzoin · baunilha · ládano",w:"Tecnicamente o mais fino dos âmbares. Um dos melhores já criados. O rei absoluto das noites frias de outono e inverno."},
+  {n:"Amouage Reflection Man",p:"Alecrim · pimenta rosa · jasmim · neroli · íris · sândalo",w:"Um dos melhores nichos de todos os tempos. O floral-amadeirado que criou um gênero inteiro na perfumaria masculina. Elegância absoluta de primavera."},
+  {n:"Mancera Cedrat Boisé",p:"Limão siciliano · groselha negra · patchouli · couro · baunilha",w:"A compra mais estratégica. Trabalho, viagem, primavera, casual — cobre 80% das ocasiões com elegância e sem esforço."},
+  {n:"Xerjoff Naxos",p:"Tabaco mel · lavanda · baunilha · canela",w:"O melhor frasco de encontro romântico da coleção. Rico, quente e profundamente sedutor — tabaco-mel com lavanda numa combinação inimitável."},
+  {n:"BDK Gris Charnel Extrait",p:"Chá preto · figo · cardamomo · sândalo · vetiver",w:"O nicho moderno mais aclamado da coleção. Chá preto, figo e sândalo em concentração extrait — sensual, confortável e sofisticado nas estações frias."},
+  {n:"Parfums de Marly Layton",p:"Maçã · lavanda · gerânio · baunilha · pimenta",w:"O mais social e universalmente apreciado. Projeta muito bem, dura o dia inteiro e recebe elogios consistentes em qualquer contexto."},
+  {n:"Louis Vuitton Ombré Nomade",p:"Oud · framboesa · rosa · incenso · açafrão · bétula",w:"O oud mais icônico da perfumaria contemporânea. Framboesa e rosa sobre oud e bétula fumada — projeção lendária. Está em 35ml como teste antes do frasco grande."},
+  {n:"Tom Ford Ombré Leather EDP",p:"Cardamomo · couro · jasmim sambac · âmbar · patchouli · musgo",w:"O couro mais elegante e wearable do mercado. Masculino e sofisticado sem ser intimidador — agora em dupla com o Regent Leather, domina o território de couro."},
+  {n:"Dior Homme Parfum",p:"Íris toscana · laranja · couro · rosa · sândalo · oud",w:"A melhor íris masculina do mercado a preço de designer. Elegância formal e noturna com longevidade e refinamento excecionais."},
+  {n:"Ex Nihilo The Hedonist Extrait",p:"Toranja · gengibre · lychee · akigalawood · amberwood · vetiver",w:"O melhor do território cítrico-gengibre e um dos mais usados da coleção. Veio antes do Vibrato (2021 contra 2022) e é o mais profundo dos dois — o akigalawood e o vetiver dão a estrutura que os outros não têm."},
+  {n:"Le Labo Santal 33",p:"Sândalo cremoso · íris · cedro · cardamomo",w:"O skin musk mais icônico do mundo niche — versátil, magnético e completamente único na coleção."},
+  {n:"Thameen Regent Leather Extrait",p:"Açafrão · rosa · jasmim · couro · baunilha",w:"Couro real com açafrão e rosa — o luxo tátil de um Rolls-Royce em frasco. Presença formal e noturna com fixação de 8+ horas."},
+  {n:"Matière Première Encens Suave",p:"Café · incenso · baunilha · benjoim · ládano",w:"O incenso mais confortável da perfumaria moderna. Café, baunilha e benjoim envolvem o olíbano — fechou a lacuna de incenso da coleção com classe."},
+  {n:"Nasomatto Black Afgano",p:"Cannabis · resinas · tabaco · café · oud · incenso",w:"A lenda escura de Gualtieri. Haxixe, resinas, café e oud — o frasco mais intenso e cult da coleção. 30ml que valem por 100."},
+  {n:"Birkholz Berlin Soul",p:"Whisky · avelã · tabaco · sândalo · fava tonka",w:"A maior surpresa da coleção. Whisky com avelã é uma dupla que praticamente ninguém faz — e a €1,10/ml entrega qualidade muito acima do que o preço sugere."},
+  {n:"Nishane Ani",p:"Gengibre · bergamota · pimenta rosa · groselha negra · rosa turca · cardamomo · baunilha",w:"Obra da Cécile Zarokian e um dos perfumes que definiram a Nishane. Gengibre solar sobre baunilha seca — o contraste é o que o torna especial."},
+  {n:"Initio Side Effect",p:"Tabaco · rum · canela · baunilha · açafrão",w:"Tabaco embebido em rum com canela e baunilha — o boozy noturno mais sedutor da coleção. Quente, envolvente e viciante."},
+];
+document.getElementById('top10-body').innerHTML=top20.map((r,i)=>`
+  <div class="top10-item">
+    <div class="t10-num">${i+1}</div>
+    <div>
+      <div class="t10-name">${r.n}</div>
+      <div class="t10-profile">${r.p}</div>
+      <div class="t10-why">${r.w}</div>
+    </div>
+  </div>`).join('');
+
+// ROTATION
+const rot=[
+  {i:"🏋",t:"Ginásio",items:["Maison Asrar Belgravia","Essential Parfums Bois Impérial","Davidoff Cool Water","Pacific Aura","Rasasi Hawas Roxo","Voux Zingy","Marwa","Khadlaj Shiyaaka Men","Maison Alhambra Jean Lowe Azure"]},
+  {i:"💼",t:"Trabalho / Reuniões",items:["Armaf Club de Nuit Élite","Clive Christian E Cashmere Musk","Maison Asrar Belgravia","Clive Christian X Masculine","Essential Parfums Bois Impérial","Creed Bois du Portugal","Memo Paris Portobello Road","Byredo Bal d'Afrique Absolu","Xerjoff XJ 17/17 Richwood Parfum","Trussardi Uomo 2011 EDT","Mancera Cedrat Boisé","Le Labo Santal 33","Initio Musk Therapy","Bleu de Chanel EDP","Terre d'Hermès Eau Intense Vétiver","Prada L'Homme EDT","Xerjoff Casamorati Mefisto Gentiluomo","Creed Aventus Cologne","Amouage Reflection Man","Amouage Decision","Amberfig Citron Soleil","Aromatix Magnetiq","Aurora Scents Black Obsidian"]},
+  {i:"⛪",t:"Igreja / Família",items:["French Avenue Liquid Brun","Maison Viegas Heaven","Nusuk Al Mukhtalif","Afnan Turathi Blue","Nishane Hundred Silent Ways Extrait","Mancera Cedrat Boisé","Faris Al Arab"]},
+  {i:"🌹",t:"Encontro romântico",items:["Memo Paris Flåm","Frédéric Malle Musc Ravageur","Xerjoff Naxos","Le Labo Santal 33","Initio Musk Therapy","Ex Nihilo The Hedonist Extrait","BDK Gris Charnel Extrait","Birkholz Berlin Soul","Sospiro Vibrato","Armani Stronger With You Intensely","Maison Crivelli Hibiscus Mahajád"]},
+  {i:"🌃",t:"Saída noturna",items:["Kajal Lamar Noir Extrait","Boss Bottled Absolu","MFK Grand Soir","Sospiro Il Padrino","Amouage Jubilation 40 Man Extrait","Louis Vuitton Ombré Nomade","Initio Oud for Greatness","Nishane Favonius Extrait","Thameen Carved Oud Extrait","Nishane Ani","Nasomatto Black Afgano","Initio Side Effect","V&R Spicebomb Extreme","Thameen Regent Leather Extrait","Margiela Replica Jazz Club","Afnan 9PM Elixir","Nuancielo Ner Tamid","Paco Rabanne 1 Million","Lattafa Asad Elixir","French Avenue Amber Empire","Rasasi Hawas Black","Armaf Club de Nuit Intense Man"]},
+  {i:"✈️",t:"Viagem",items:["Mancera Cedrat Boisé","Parfums de Marly Layton","Nishane Hacivat","Le Labo Santal 33","Creed Aventus Cologne","Dior Sauvage EDP","Afnan Supremacy Collector's Edition","Nuancielo Real King"]},
+  {i:"☀️",t:"Primavera · Verão Pescara",items:["Armaf Club de Nuit Élite","Nusuk Al Mukhtalif","Clive Christian E Cashmere Musk","Maison Asrar Belgravia","Essential Parfums Bois Impérial","Memo Paris Portobello Road","Byredo Bal d'Afrique Absolu","Trussardi Uomo 2011 EDT","Mancera Cedrat Boisé","Nishane Hacivat","Parfums de Marly Layton","Le Labo Santal 33","Initio Musk Therapy","Ex Nihilo The Hedonist Extrait","Sospiro Vibrato","Prada L'Homme EDT","Xerjoff Casamorati Mefisto Gentiluomo","Creed Aventus Cologne","Maison Asrar Regent","LAB 8 Effervescent","Maison Viegas Grand Tygar","Azza Parfums Gran Everest","New Notes Cocktail Maracuja","BDK Crème de Cuir"]},
+  {i:"🍂",t:"Outono · Inverno",items:["Memo Paris Flåm","Clive Christian X Masculine","Creed Bois du Portugal","Kajal Lamar Noir Extrait","Xerjoff XJ 17/17 Richwood Parfum","Boss Bottled Absolu","MFK Grand Soir","Xerjoff Naxos","Tom Ford Ombré Leather EDP","Initio Side Effect","Ex Nihilo The Hedonist Extrait","BDK Gris Charnel Extrait","Matière Première Encens Suave","Thameen Regent Leather Extrait","Frédéric Malle Musc Ravageur","LAB 8 Strategy","V&R Spicebomb Extreme","Dior Homme Parfum","Nuancielo Ner Tamid","Riiffs Momento Extrait"]},
+];
+document.getElementById('rot-grid').innerHTML=rot.map(r=>`
+  <div class="rot-card">
+    <div class="rot-head"><span class="rot-ico">${r.i}</span><span class="rot-title">${r.t}</span></div>
+    ${r.items.map(x=>`<div class="rot-item">${x}</div>`).join('')}
+  </div>`).join('');
+
+// SEASONS
+const seasons=[
+  {t:"Primavera",s:"Mar — Mai",items:["Armaf Club de Nuit Élite","Nusuk Al Mukhtalif","Clive Christian E Cashmere Musk","Memo Paris Flåm","Maison Asrar Belgravia","Essential Parfums Bois Impérial","Memo Paris Portobello Road","Byredo Bal d'Afrique Absolu","Trussardi Uomo 2011 EDT","Mancera Cedrat Boisé","Nishane Hacivat","Amouage Reflection Man","Parfums de Marly Layton","Le Labo Santal 33","Initio Musk Therapy","Ex Nihilo The Hedonist Extrait","Sospiro Vibrato","Bleu de Chanel EDP","Dior Sauvage EDP","Prada L'Homme EDT","Xerjoff Casamorati Mefisto Gentiluomo","Creed Aventus Cologne","Rasasi Hawas Roxo","Maison Asrar Regent","Maison Crivelli Hibiscus Mahajád","Aromatix Magnetiq","Amberfig Citron Soleil","BDK Crème de Cuir","Nuancielo Real King","Terre d'Hermès Eau Intense Vétiver","Armaf Club de Nuit Intense Man","Aurora Scents Black Obsidian","Nishane Hundred Silent Ways Extrait","Amouage Decision"],g:[]},
+  {t:"Verão",s:"Jun — Ago",items:["Armaf Club de Nuit Élite","Nusuk Al Mukhtalif","Clive Christian E Cashmere Musk","Maison Asrar Belgravia","Essential Parfums Bois Impérial","Memo Paris Portobello Road","Byredo Bal d'Afrique Absolu","Trussardi Uomo 2011 EDT","Nishane Hacivat","Le Labo Santal 33","Davidoff Cool Water","Mancera Cedrat Boisé","Initio Musk Therapy","Sospiro Vibrato","LAB 8 Effervescent","Creed Aventus Cologne","Xerjoff Casamorati Mefisto Gentiluomo","Pacific Aura","Prada L'Homme EDT","Maison Asrar Regent","Khadlaj Shiyaaka Men","Voux Zingy","Marwa","Afnan Turathi Blue","Maison Viegas Heaven","Maison Viegas Grand Tygar","Azza Parfums Gran Everest","Maison Alhambra Jean Lowe Azure","New Notes Cocktail Maracuja","BDK Crème de Cuir"],g:[]},
+  {t:"Outono",s:"Set — Nov",items:["Clive Christian E Cashmere Musk","Memo Paris Flåm","Clive Christian X Masculine","Essential Parfums Bois Impérial","Creed Bois du Portugal","Kajal Lamar Noir Extrait","Xerjoff XJ 17/17 Richwood Parfum","Boss Bottled Absolu","Nishane Hacivat","Bleu de Chanel EDP","Tom Ford Ombré Leather EDP","Armaf Club de Nuit Intense Man","Ex Nihilo The Hedonist Extrait","BDK Gris Charnel Extrait","Matière Première Encens Suave","Thameen Regent Leather Extrait","Nishane Favonius Extrait","Nishane Hundred Silent Ways Extrait","Amouage Decision","Nuancielo Real King","Terre d'Hermès Eau Intense Vétiver","Parfums de Marly Layton","Initio Side Effect","Armani Stronger With You Intensely","Dior Homme Parfum","Margiela Replica Jazz Club","French Avenue Liquid Brun","Afnan Supremacy Collector's Edition","Rasasi Hawas Black","Aurora Scents Black Obsidian","Nusuk Al Mukhtalif"],g:[]},
+  {t:"Inverno",s:"Dez — Fev",items:["Memo Paris Flåm","Clive Christian X Masculine","Creed Bois du Portugal","Kajal Lamar Noir Extrait","Xerjoff XJ 17/17 Richwood Parfum","Boss Bottled Absolu","MFK Grand Soir","Amouage Jubilation 40 Man Extrait","Xerjoff Naxos","BDK Gris Charnel Extrait","Matière Première Encens Suave","Thameen Regent Leather Extrait","Thameen Carved Oud Extrait","Birkholz Berlin Soul","Frédéric Malle Musc Ravageur","Initio Side Effect","Sospiro Il Padrino","Initio Oud for Greatness","Nuancielo Ner Tamid","LAB 8 Strategy","V&R Spicebomb Extreme","Afnan 9PM Elixir","Tom Ford Ombré Leather EDP","Louis Vuitton Ombré Nomade","Nishane Ani","Nasomatto Black Afgano","Paco Rabanne 1 Million","Lattafa Asad Elixir","French Avenue Amber Empire","Riiffs Momento Extrait","Faris Al Arab"],g:[]},
+];
+document.getElementById('sea-grid').innerHTML=seasons.map(s=>`
+  <div class="sea-card">
+    <div class="sea-season">${s.t}</div>
+    <div class="sea-months">${s.s}</div>
+    ${s.items.map(x=>`<div class="sea-item">${x}</div>`).join('')}
+    ${s.g.map(x=>`<div class="sea-gap">${x}</div>`).join('')}
+  </div>`).join('');
+
+// GAPS
+document.getElementById('gap-body').innerHTML=[
+  {st:"done",n:"Verde / Fougère",p:"fechada pelo Portobello Road",d:`Fechada na pele, não no papel. O Memo Portobello Road (Aliénor Massenet, 2025) traz folhas verdes, murta e sálvia esclareia sobre vetiver e patchouli, e virou um dos favoritos. O verde seco e terroso continua reprovado (Sultan Vetiver, Terre encostado); o verde que funciona aqui vem molhado e floral.`},
+  {st:"open",n:"Cítrico acima de 28°C",p:"parcialmente aliviada",d:"Cedrat Boisé e Layton ficam pesados no auge do verão de Pescara. O Cocktail Maracuja e o Jean Lowe Azure aliviaram o problema, mas nenhum é cítrico puro de alta temperatura. Orto Parisi Megamare (marinho salgado, extrait) é hoje o candidato mais forte — à frente do Acqua di Parma Colonia."},
+  {st:"done",n:"Incenso / Oud resinoso",p:"fechada",d:"O território mais bem servido da coleção: oito frascos com oud e nove com incenso. Encens Suave (incenso doce com café), Decision (incenso frio e mineral), Black Afgano (resina escura), Ombré Nomade (oud com rosa), Oud for Greatness (nagarmotha e açafrão) e Favonius (oud com lychee e artemísia). Qualquer adição aqui seria repetição."},
+  {st:"done",n:"Couro em clima quente",p:"fechada",d:"Dos nove couros da coleção, todos os protagonistas eram de estação fria — Ombré Leather, Regent Leather, Dior Homme, 9PM Elixir. O BDK Crème de Cuir trouxe camurça branca com cítricos: couro como assunto principal, usável acima de 25°C."},
+  {st:"done",n:"Musk animálico",p:"fechada",d:"Dos doze frascos com musk, onze eram limpos — musk branco, almíscar cítrico, marinho. O Frédéric Malle Musc Ravageur é o primeiro carnal e quente da coleção, e abriu o registro de intimidade que faltava."},
+].map(g=>`
+  <div class="gap-row">
+    <div class="gap-dot ${g.st==='done'?'dot-done':g.st==='partial'?'dot-partial':'dot-open'}"></div>
+    <div>
+      <div class="gap-name">${g.n}${g.p?` <span class="gap-pill">${g.p}</span>`:''}</div>
+      <div class="gap-desc">${g.d}</div>
+    </div>
+  </div>`).join('');
+
+// CARD DO PERFUME
+const catAccent={niche:"#8A6FC0",designer:"#4A7EB0",oriental:"#C08A2A",inspired:"#4E9560"};
+function bottleSVG(p){
+  const col=catAccent[p.c]||"#B8922A";
+  const init=p.h.split(/\s+/).map(w=>w[0]).join("").slice(0,3).toUpperCase();
+  return `<svg viewBox="0 0 120 170" width="130" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="liq" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${col}" stop-opacity=".9"/>
+      <stop offset="1" stop-color="${col}" stop-opacity=".45"/></linearGradient></defs>
+    <rect x="47" y="6" width="26" height="16" rx="2" fill="#3A3833"/>
+    <rect x="52" y="22" width="16" height="12" fill="#55524A"/>
+    <rect x="30" y="34" width="60" height="120" rx="8" fill="url(#liq)" stroke="rgba(255,255,255,.28)" stroke-width="1.5"/>
+    <rect x="40" y="72" width="40" height="46" rx="2" fill="rgba(250,248,243,.94)"/>
+    <text x="60" y="99" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="15" fill="#1C1B18">${init}</text>
+  </svg>`;
+}
+function openCard(i){
+  const p=perfumes[i];
+  const t=top20.findIndex(x=>x.n===p.n);
+  const rots=rot.filter(r=>r.items.includes(p.n));
+  const seas=seasons.filter(s=>s.items.includes(p.n));
+  document.getElementById('modal-card').innerHTML=`
+    <button class="m-close" onclick="closeCard()" aria-label="Fechar">×</button>
+    <div class="modal-visual">
+      ${p.img?`<img src="${p.img}" alt="${p.n}" referrerpolicy="no-referrer" loading="lazy" style="max-width:100%;max-height:260px;object-fit:contain;border-radius:3px" onerror="this.outerHTML=bottleSVG(perfumes[${i}])">`:bottleSVG(p)}
+      ${t>-1?`<div class="m-rank">Top ${t+1} da coleção</div>`:''}
+    </div>
+    <div class="modal-body">
+      <div class="m-house">${p.h}</div>
+      <div class="m-name">${p.n}</div>
+      <div class="m-tags">
+        <span class="tag ${cCls[p.c]}">${cLbl[p.c]}</span>
+        ${p.o.filter(x=>oLbl[x]).map(x=>`<span class="tag ${oCls[x]}">${oLbl[x]}</span>`).join('')}
+        <span class="tag" style="background:var(--cream);color:var(--muted)">${p.v}</span>${p.pr?`<span class="tag" style="background:var(--gold-lt);color:#5A4A10">€${p.pr}</span>`:''}
+      </div>
+      ${p.f?`<div class="m-sec">Função na coleção</div><div class="m-profile">${p.f}</div>`:''}
+      <div class="m-sec">Perfil olfativo</div>
+      <div class="m-profile">${p.p||'—'}</div>
+      ${rots.length?`<div class="m-sec">Rotação</div><div class="m-chips">${rots.map(r=>`<span class="m-chip">${r.i} ${r.t}</span>`).join('')}</div>`:''}
+      ${seas.length?`<div class="m-sec">Estações</div><div class="m-chips">${seas.map(s=>`<span class="m-chip">${s.t} · ${s.s}</span>`).join('')}</div>`:''}
+    </div>`;
+  document.getElementById('modal-bg').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeCard(){
+  document.getElementById('modal-bg').classList.remove('on');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCard();});
+
+// ABRIR COLEÇÃO JÁ FILTRADA POR CATEGORIA
+function goCat(c){
+  document.getElementById('si').value='';
+  document.getElementById('of').value='';
+  document.getElementById('cf').value=c;
+  go('colecao',document.getElementById('nav-colecao'));
+}
+
+// NAV
+function go(id, el){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  if(el){
+    document.querySelectorAll('.s-link').forEach(l=>l.classList.remove('active'));
+    el.classList.add('active');
+  }
+  if(id==='colecao') filter();
+  window.scrollTo(0,0);
+}
+
+filter();
+</script>
+</body>
+</html>
